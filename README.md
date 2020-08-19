@@ -5,9 +5,14 @@ This project is a collaboration with Dr. Xiudao Yu and Dr. Zhanjun Lu from Ganna
 ---
 
 ## Task 1: Determine the sex chromosome system
-Are there DNA methylation differences in the sex chromosomes? There is a chromosome level assembly of *D. citri* but the sex chromosomes have not been identified. Xiudao has therefore carried out whole genome resequencing of male and female *D. citri*. 
+
+There is a chromosome level assembly of *D. citri* but the sex chromosomes have not been identified. Xiudao has therefore carried out whole genome resequencing of male and female *D. citri* so we can attempt to determine whether the system is XO or XY.
 
 I will follow Kamil's coverage pipeline to see if we have clear coverage differences in one particular chromosome set in males vs females: [https://github.com/RossLab/PGE/blob/master/sex_chromosome_p_citry.md.](https://github.com/RossLab/PGE/blob/master/sex_chromosome_p_citry.md).
+
+**TO-DO:**
+
+**Get the genome and annotation:** the chromosome level assembly paper is avaliable [here](https://www.biorxiv.org/content/10.1101/869685v1). As it is still a pre-print and not published ther authors have not yet released the full version. Version 2 is avaliable [here](https://citrusgreening.org/organism/Diaphorina_citri/genome). This is also the location they will deposit version 3 when they publish. I will email the authors to see if we can get version 3 earlier.
 
 ---
 
