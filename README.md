@@ -10,9 +10,9 @@ There is a chromosome level assembly of *D. citri* but the sex chromosomes have 
 
 I will follow Kamil's coverage pipeline to see if we have clear coverage differences in one particular chromosome set in males vs females: [https://github.com/RossLab/PGE/blob/master/sex_chromosome_p_citry.md.](https://github.com/RossLab/PGE/blob/master/sex_chromosome_p_citry.md).
 
-**TO-DO:**
+**Genome and annotation:** the chromosome level assembly paper is avaliable [here](https://www.biorxiv.org/content/10.1101/869685v1). As it is still a pre-print and not published ther authors have not yet released the full version. I have emailed the authors and obtained version 3 plus a current annotation file.
 
-**Get the genome and annotation:** the chromosome level assembly paper is avaliable [here](https://www.biorxiv.org/content/10.1101/869685v1). As it is still a pre-print and not published ther authors have not yet released the full version. Version 2 is avaliable [here](https://citrusgreening.org/organism/Diaphorina_citri/genome). This is also the location they will deposit version 3 when they publish. I will email the authors to see if we can get version 3 earlier.
+**Current Progress:** Following Kamil's pipeline above we have successfully identified that the X chromosome is chromosome 8. I am now running a windowed coverage approach to see if we can identify whether there is a Y or not. 
 
 ---
 
