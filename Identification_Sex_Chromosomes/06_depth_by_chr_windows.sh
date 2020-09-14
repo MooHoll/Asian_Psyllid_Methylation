@@ -21,13 +21,13 @@ rsync /data/ross/misc/analyses/asian_psyllid/Dcitri_chroms_length_tabfile.txt ./
 bedtools makewindows -g Dcitri_chroms_length_tabfile.txt \
 -w 10000 -i srcwinnum > Dcitri_chroms_windows.txt
 
-awk '{ print $4 " " $2 " " $3}' Dcitri_chroms_windows.txt > Dcitri_chroms_windows.bed
+#awk '{ print $4 " " $2 " " $3}' Dcitri_chroms_windows.txt > Dcitri_chroms_windows.bed
 
 for file in $(ls *sorted.bam)
 do 
 	base=$(basename ${file} "sorted.bam")
-	samtools depth -b Dcitri_chroms_windows.bed ${file} | \
-    awk '/BEGIN/{scf='DC3.0sc00_1'; coverage_sum = 0; }{ if( scf != $1 ){ print scf "\t" coverage_sum; scf = $1; coverage_sum = $3 } else { scf = $1; coverage_sum += $3} }' > ${base}window_depth.txt
+	samtools depth -b Dcitri_chroms_windows.txt ${file} | \
+    awk '/BEGIN/{scf='DC3.0sc00'; coverage_sum = 0; }{ if( scf != $1 ){ print scf "\t" coverage_sum; scf = $1; coverage_sum = $3 } else { scf = $1; coverage_sum += $3} }' > ${base}window_depth.txt
 done
 
 echo "moving outputs"
