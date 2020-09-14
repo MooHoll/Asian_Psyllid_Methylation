@@ -12,7 +12,7 @@ I will follow Kamil's coverage pipeline to see if we have clear coverage differe
 
 **Genome and annotation:** the chromosome level assembly paper is avaliable [here](https://www.biorxiv.org/content/10.1101/869685v1). As it is still a pre-print and not published ther authors have not yet released the full version. I have emailed the authors and obtained version 3 plus a current annotation file.
 
-**Current Progress:** Following Kamil's pipeline above we have successfully identified that the X chromosome is chromosome 8. I am now running a windowed coverage approach to see if we can identify whether there is a Y or not. 
+**Current Progress:** Following Kamil's pipeline above I have successfully identified that the X chromosome is chromosome 8. I am now running a windowed coverage approach to see if I can identify whether there is a Y or not. 
 
 ---
 
