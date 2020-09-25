@@ -19,19 +19,20 @@ rsync /data/ross/misc/analyses/asian_psyllid/Dcitri_chroms_length_tabfile.txt ./
 
 # The -g input files is a tab sep txt file with chr and chr_size columns (no headers)
 bedtools makewindows -g Dcitri_chroms_length_tabfile.txt \
--w 10000 -i srcwinnum > Dcitri_chroms_windows.txt
+-w 10000 -i srcwinnum > Dcitri_chroms_windows.bed
 
-#awk '{ print $4 " " $2 " " $3}' Dcitri_chroms_windows.txt > Dcitri_chroms_windows.bed
+samtools index female_sorted.bam
+samtools index male_sorted.bam
 
 for file in $(ls *sorted.bam)
 do 
 	base=$(basename ${file} "sorted.bam")
-	samtools depth -b Dcitri_chroms_windows.txt ${file} | \
-    awk '/BEGIN/{scf='DC3.0sc00'; coverage_sum = 0; }{ if( scf != $1 ){ print scf "\t" coverage_sum; scf = $1; coverage_sum = $3 } else { scf = $1; coverage_sum += $3} }' > ${base}window_depth.txt
+	mosdepth -t 4 --no-per-base -b Dcitri_chroms_windows.bed \
+	${base} ${base}_sorted.bam 
 done
 
 echo "moving outputs"
-mv *depth.txt /data/ross/misc/analyses/asian_psyllid
+mv *regions.bed.gz /data/ross/misc/analyses/asian_psyllid
 
 echo "a clean directory is a happy directory"
 rm -r $SCRATCH/*
