@@ -12,7 +12,10 @@ Genome and annotation: the chromosome level assembly paper is avaliable [here](h
 
 I will follow Kamil's coverage pipeline to see if we have clear coverage differences in one particular chromosome set in males vs females: [https://github.com/RossLab/PGE/blob/master/sex_chromosome_p_citry.md.](https://github.com/RossLab/PGE/blob/master/sex_chromosome_p_citry.md).
 
-**Current Progress:** Following Kamil's pipeline above I have successfully identified that the X chromosome is chromosome 8. I am now running a windowed coverage approach to see if I can identify whether there is a Y or not. 
+**Current Progress:** Following Kamil's pipeline above I have successfully identified that the X chromosome is chromosome 8. I have now also ran a windowed coverage approach to look for the Y chromosome. I have found no clear distributions >0.5 male2femaleLogRatio meaning there is no divereged Y present. The system is most likely X0 however, I cannot rule out a newly evolved Y chromosome using this method. Question: is this analysis good enough to confirm X0 or is there more we can do, with the RNA-Seq for example? The problem is we are using pools of individuals so it makes looking for SNPs which may differ between XY a little tricky, but not impossible maybe???
+
+![](images/chromosome_copies_bar.pdf)
+
 
 ---
 

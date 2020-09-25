@@ -28,7 +28,7 @@ for file in $(ls *sorted.bam)
 do 
 	base=$(basename ${file} "sorted.bam")
 	mosdepth -t 4 --no-per-base -b Dcitri_chroms_windows.bed \
-	${base} ${base}_sorted.bam 
+	${base} ${base}sorted.bam 
 done
 
 echo "moving outputs"
