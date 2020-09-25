@@ -14,10 +14,10 @@ I will follow Kamil's coverage pipeline to see if we have clear coverage differe
 
 **Current Progress:** Following Kamil's pipeline above I have successfully identified that the X chromosome is chromosome 8. I have now also ran a windowed coverage approach to look for the Y chromosome. I have found no clear distributions >0.5 male2femaleLogRatio meaning there is no divereged Y present. The system is most likely X0 however, I cannot rule out a newly evolved Y chromosome using this method. Question: is this analysis good enough to confirm X0 or is there more we can do, with the RNA-Seq for example? The problem is we are using pools of individuals so it makes looking for SNPs which may differ between XY a little tricky, but not impossible maybe???
 
-![](./images/coverage_plot.jpeg =100x20)
-![](./images/all_chr_distribution.jpeg)
-![](./images/per_chr_distribution.jpeg)
-![](./images/08.png)
+![](./images/coverage_plot.jpeg) <img src="https://github.com/favicon.ico" height="24">
+![](./images/all_chr_distribution.jpeg) <img src="https://github.com/favicon.ico" height="24">
+![](./images/per_chr_distribution.jpeg) <img src="https://github.com/favicon.ico" height="24">
+![](./images/08.png) <img src="https://github.com/favicon.ico" height="24">
 
 
 ---
