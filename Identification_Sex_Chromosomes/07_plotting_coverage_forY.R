@@ -29,7 +29,7 @@ all_data <- merge(female_depth_file, male_depth_file, by="name")
 all_data <- all_data[,-c(2,3,4)]
 colnames(all_data) <- c("name","female_depth","female_copies","scf","start","end","male_depth","male_copies")
 
-all_data$male2female_logratio <- log2(male_copies / female_copies)
+all_data$male2female_logratio <- log2(all_data$male_copies / all_data$female_copies)
 all_data$scf <- gsub("DC3.0sc", "", all_data$scf)
 
 full_plot <- ggplot(all_data, aes (x=male2female_logratio, fill=scf))+
