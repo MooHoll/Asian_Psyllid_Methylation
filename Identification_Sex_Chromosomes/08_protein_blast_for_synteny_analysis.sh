@@ -1,13 +1,3 @@
-# Identifying synteny between D. citri chromosomes and the other published psyllid
-# genome which also has the X annotated
-
-# Genome from: https://www.ncbi.nlm.nih.gov/genome/?term=txid38123[orgn]
-# version: Pven_dovetail
-# annotation and protein fasta from: https://github.com/lyy005/Psyllid_chromosome_assembly/tree/master/step0_genome_annotation_files
-# published in: https://academic.oup.com/mbe/article/37/8/2357/5820017
-
-########################################################################################################
-
 #$ -V
 #$ -cwd
 #$ -j y
