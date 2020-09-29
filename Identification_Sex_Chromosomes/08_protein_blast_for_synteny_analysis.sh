@@ -36,7 +36,6 @@ blastp -db Pachypsylla_venusta_protein_blastdb \
 -evalue 1e-10 \
 -outfmt 6 \
 -num_alignments 5 \
--num_descriptions 5 \
 -num_threads 10 \
 -out Dcitri_to_Pvenusta.blast
 
