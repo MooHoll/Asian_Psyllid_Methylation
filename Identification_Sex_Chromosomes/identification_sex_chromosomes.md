@@ -32,4 +32,4 @@ The psyllid *Pachypsylla venusta* has recently been sequneced to chromosome leve
 The genome can be found [here](https://www.ncbi.nlm.nih.gov/genome/?term=txid38123[orgn]), version: Pven_dovetail. The annotation files and protein fasta files can be found [here](https://github.com/lyy005/Psyllid_chromosome_assembly/tree/master/step0_genome_annotation_files). 
 
 
-**NOTES:** Currently running the blast, next need to make the .gff file into the correct format for MCScanX, see [here](http://chibba.pgml.uga.edu/mcscan2/documentation/manual.pdf).
+**NOTES:** Currently running the blast.

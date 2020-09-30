@@ -13,16 +13,16 @@ start=`date +%s`
 
 #---------------------------------------------
 echo "copying data in"
-rsync /data/ross/misc/analyses/asian_psyllid/genome/Dcitr_OGSv3.0_beta_pep.fa ./
-rsync /data/ross/misc/analyses/asian_psyllid/sex_chromosome_analysis/x_chrom_synteny/Pachypsylla_venusta.pep.fa ./
+rsync /data/ross/misc/analyses/asian_psyllid/genome/Dcitr_OGSv3.0_beta_singlecopy.pep.fa ./
+rsync /data/ross/misc/analyses/asian_psyllid/sex_chromosome_analysis/x_chrom_synteny/Pachypsylla_venusta_singlecopy.pep.fa ./
 
 echo "making blast database"
-makeblastdb -in Pachypsylla_venusta.pep.fa -dbtype prot -out Pachypsylla_venusta_protein_blastdb
+makeblastdb -in Pachypsylla_venusta_singlecopy.pep.fa -dbtype prot -out Pachypsylla_venusta_protein_blastdb
 
 echo "running blast"
 # following parameters set in: https://doi.org/10.1101/2020.03.24.006411
 blastp -db Pachypsylla_venusta_protein_blastdb \
--query Dcitr_OGSv3.0_beta_pep.fa \
+-query Dcitr_OGSv3.0_beta_singlecopy.pep.fa  \
 -evalue 1e-10 \
 -outfmt 6 \
 -num_alignments 5 \
