@@ -44,6 +44,6 @@ Then take Dcitri_to_Pvenusta.gff and the generated Dcitri_to_Pvenusta.collineari
 
 The *D. citri* chromosome 08 does indeed match the X in *P. venusta*. So exciting! 
 
-<img src="../images/synvisio-export-PNG-kfp9xsrn.png height="240">
+<img src="../images/synvisio-export-PNG-kfp9xsrn.png" height="240">
 
-<img src="../images/synvisio-export-PNG-kfp9x4bg.png height="240">
+<img src="../images/synvisio-export-PNG-kfp9x4bg.png" height="240">
