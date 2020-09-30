@@ -13,7 +13,7 @@ start=`date +%s`
 
 #---------------------------------------------
 echo "copying data in"
-rsync /data/ross/misc/analyses/asian_psyllid/genome/Dcitr_OGSv3.0_beta_singlecopy.pep.fa ./
+rsync /data/ross/misc/analyses/asian_psyllid/sex_chromosome_analysis/x_chrom_synteny/Dcitr_OGSv3.0_beta_singlecopy.pep.fa ./
 rsync /data/ross/misc/analyses/asian_psyllid/sex_chromosome_analysis/x_chrom_synteny/Pachypsylla_venusta_singlecopy.pep.fa ./
 
 echo "making blast database"
