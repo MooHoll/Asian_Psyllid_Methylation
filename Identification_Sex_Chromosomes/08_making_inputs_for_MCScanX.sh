@@ -124,5 +124,6 @@ sed -i 's/;.*//g' look2
 awk '{ print $1 " " $4 " " $2 " " $3 }' look2 > Dcitri_edited.gff
 
 cat Pachypsylla_venusta_edited.gff Dcitri_edited.gff > Dcitri_to_Pvenusta.gff
+sed -i 's/ /\t/g' Dcitri_to_Pvenusta.gff 
 
 #---------------------------------------------------------------

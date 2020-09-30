@@ -31,5 +31,19 @@ The psyllid *Pachypsylla venusta* has recently been sequneced to chromosome leve
 
 The genome can be found [here](https://www.ncbi.nlm.nih.gov/genome/?term=txid38123[orgn]), version: Pven_dovetail. The annotation files and protein fasta files can be found [here](https://github.com/lyy005/Psyllid_chromosome_assembly/tree/master/step0_genome_annotation_files). 
 
+After running scripts:<br/>
+- 08_making_inputs_for_MCScanX.sh
+- 09_protein_blast_for_synteny_analysis.sh
 
-**NOTES:** Currently running the blast.
+Run the following in the MCScanX directory also containing Dcitri_to_Pvenusta.blast and Dcitri_to_Pvenusta.gff  :<br/>
+`./MCScanX ./Dcitri_to_Pvenusta`
+
+Then take Dcitri_to_Pvenusta.gff and the generated Dcitri_to_Pvenusta.collinearity and upload to [Synvisio](https://synvisio.github.io/#/Upload) for nice graphs.
+
+---
+
+The *D. citri* chromosome 08 does indeed match the X in *P. venusta*. So exciting! 
+
+<img src="../images/synvisio-export-PNG-kfp9xsrn.png height="240">
+
+<img src="../images/synvisio-export-PNG-kfp9x4bg.png height="240">
