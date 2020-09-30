@@ -35,15 +35,18 @@ After running scripts:<br/>
 - 08_making_inputs_for_MCScanX.sh
 - 09_protein_blast_for_synteny_analysis.sh
 
-Run the following in the MCScanX directory also containing Dcitri_to_Pvenusta.blast and Dcitri_to_Pvenusta.gff  :<br/>
-`./MCScanX ./Dcitri_to_Pvenusta`
+Run the following in the directory containing Dcitri_to_Pvenusta.blast and Dcitri_to_Pvenusta.gff:<br/>
+`./MCScanX -s 10 -b 2 ./Dcitri_to_Pvenusta`
+
+-s referes to the number of genes which must be present to call a collinear block <br/>
+-b tells MCScanX that the comparison is inter-species
 
 Then take Dcitri_to_Pvenusta.gff and the generated Dcitri_to_Pvenusta.collinearity and upload to [Synvisio](https://synvisio.github.io/#/Upload) for nice graphs.
 
 ---
 
-The *D. citri* chromosome 08 does indeed match the X in *P. venusta*. So exciting! 
+The *D. citri* chromosome 08 does indeed match the X in *P. venusta*. So exciting! NOTE: share of collinear genes is only 11.25%.
 
-<img src="../images/synvisio-export-PNG-kfp9xsrn.png">
+<img src="../images/synvisio-export-PNG-kfpdk3wn.png">
 
-<img src="../images/synvisio-export-PNG-kfp9x4bg.png">
+<img src="../images/synvisio-export-PNG-kfpdiwj1.png">
