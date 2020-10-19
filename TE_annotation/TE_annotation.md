@@ -10,7 +10,9 @@ There are two ways I can do this:
 
 ---
 
-## Create an environment for the EDTA doftware
+## Running EDTA for TE annotation
+
+### Create EDTA environment
 
 Install as shown in the softwar github [here](https://github.com/oushujun/EDTA).
 
@@ -19,4 +21,13 @@ Install as shown in the softwar github [here](https://github.com/oushujun/EDTA).
     conda config --env --add channels anaconda --add channels conda-forge --add channels bioconda
     conda install -n EDTA_env -y cd-hit repeatmodeler muscle mdust blast openjdk perl perl-text-soundex multiprocess regex tensorflow=1.14.0 keras=2.2.4 scikit-learn=0.19.0 biopython pandas glob2 python=3.6 tesorter genericrepeatfinder genometools-genometools ltr_retriever ltr_finder numpy=1.16.4
     git clone https://github.com/oushujun/EDTA
-    ./EDTA/EDTA.pl
+
+### Make a genes bed file for *D.citri*
+
+    grep "gene" Dcitr_OGSv3.0_beta.gff3 > genes
+    cut -f 4,5,9 genes > genes_cut
+    sed -i 's/ID=//g' genes_cut 
+    sed -i 's/;.*//g' genes_cut 
+    awk '{ print $3 "\t" $1 "\t" $2}' genes_cut > Dcitri_genes.bed
+
+NOTE: currently running the EDTA pipeline.
