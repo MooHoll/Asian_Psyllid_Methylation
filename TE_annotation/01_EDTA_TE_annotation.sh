@@ -23,6 +23,7 @@ perl /data/ross/misc/analyses/asian_psyllid/te_analysis/EDTA/EDTA_raw.pl \
 --genome Diaci_v3.0.ref.fa \
 --cds Dcitr_OGSv3.0_beta_cds.fa \
 --anno 1 \
+--sensitive 1 \
 --exclude Dcitri_genes.bed \
 --threads 32
 

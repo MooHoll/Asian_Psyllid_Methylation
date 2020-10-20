@@ -30,4 +30,4 @@ Install as shown in the softwar github [here](https://github.com/oushujun/EDTA).
     sed -i 's/;.*//g' genes_cut 
     awk '{ print $3 "\t" $1 "\t" $2}' genes_cut > Dcitri_genes.bed
 
-NOTE: currently running the EDTA pipeline.
+NOTE: currently running the EDTA pipeline, run 1 only took 12 hrs (nice!), running again now in sensitive mode to check the differences.
