@@ -19,7 +19,7 @@ rsync /data/ross/misc/analyses/asian_psyllid/genome/Dcitri_genes.bed ./
 
 echo "running EDTA"
 
-perl /data/ross/misc/analyses/asian_psyllid/te_analysis/EDTA/EDTA_raw.pl \
+perl /data/ross/misc/analyses/asian_psyllid/te_analysis/EDTA/EDTA.pl \
 --genome Diaci_v3.0.ref.fa \
 --cds Dcitr_OGSv3.0_beta_cds.fa \
 --anno 1 \
