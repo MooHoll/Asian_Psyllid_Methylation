@@ -30,4 +30,10 @@ Install as shown in the softwar github [here](https://github.com/oushujun/EDTA).
     sed -i 's/;.*//g' genes_cut 
     awk '{ print $3 "\t" $1 "\t" $2}' genes_cut > Dcitri_genes.bed
 
-NOTE: currently running the EDTA pipeline, the raw run only took 12hrs but now running the full run including extra sensative mode with repeatmodeler. This may take quite a long time apparently, althought the genome is relativly small so we will see. 
+### Output files
+
+Everything ran well with no errors or warnings. There are a LOT of output files, here are links to the main ones of interest: 
+
+[Diaci_v3.0.ref.fa.mod.EDTA.TElib.fa]() - fasta seq of the different TEs found <br/>
+[Diaci_v3.0.ref.fa.mod.EDTA.intact.gff3]() - gff file of the TEs found <br/>
+[Diaci_v3.0.ref.fa.mod.EDTA.TEanno.gff3]() - gff file of the TEs found including fragmented TEs

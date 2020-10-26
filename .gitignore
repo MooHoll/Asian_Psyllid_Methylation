@@ -1,1 +1,3 @@
-
+*.DS_store
+*.Rhistory
+TE_annotation/files/*

@@ -7,7 +7,10 @@ This project is a collaboration with Dr. Xiudao Yu and Dr. Zhanjun Lu from Ganna
 ## Task 1: Determine the sex chromosome system
 Summary: there is an X0 system with chromosome 08 being the X chromosome. See [here](./Identification_Sex_Chromosomes/identification_sex_chromosomes.md) for more details.
 
-Currently I am running a chromosome synteny analysis with the other sequenced psyllid, *Pachypsylla venusta.*
+---
+
+## Task 2: annotate TEs for later methylation analyses
+Summary: TE's successfully annotated using the EDTA pipeline, see [here](./TE_annotation/TE_annotation.md) for more details.
 
 ---
 
@@ -40,7 +43,3 @@ Currently I am running a chromosome synteny analysis with the other sequenced ps
     - Male/female biased methylated/expressed enriched on the X?
     - Overall methylation levels of differentially expressed/spliced
     - Overall expression levels of differentially methylated
-
-
-## Other thoughts:
-- Do we want to annotate TEs and include them in the analyses?
