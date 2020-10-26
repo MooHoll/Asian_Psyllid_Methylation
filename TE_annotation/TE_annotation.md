@@ -32,8 +32,8 @@ Install as shown in the softwar github [here](https://github.com/oushujun/EDTA).
 
 ### Output files
 
-Everything ran well with no errors or warnings. There are a LOT of output files, here are links to the main ones of interest: 
+Everything ran well with no errors or warnings. There are a LOT of output files, the mains ones of interest can be found [here](https://www.dropbox.com/sh/ht0c0ilquin18rw/AAB32LIfi95ZyPv1KCllrMrua?dl=0).
 
-[Diaci_v3.0.ref.fa.mod.EDTA.TElib.fa](./files/Diaci_v3.0.ref.fa.mod.EDTA.TElib.fa) - fasta seq of the different TEs found <br/>
-[Diaci_v3.0.ref.fa.mod.EDTA.intact.gff3](./files/Diaci_v3.0.ref.fa.mod.EDTA.intact.gff3) - gff file of the TEs found <br/>
-[Diaci_v3.0.ref.fa.mod.EDTA.TEanno.gff3](./files/Diaci_v3.0.ref.fa.mod.EDTA.TEanno.gff3) - gff file of the TEs found including fragmented TEs
+Diaci_v3.0.ref.fa.mod.EDTA.TElib.fa - fasta seq of the different TEs found <br/>
+Diaci_v3.0.ref.fa.mod.EDTA.intact.gff3 - gff file of the TEs found <br/>
+Diaci_v3.0.ref.fa.mod.EDTA.TEanno.gff3 - gff file of the TEs found including fragmented TEs
