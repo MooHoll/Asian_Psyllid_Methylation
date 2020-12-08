@@ -21,7 +21,7 @@ Fig.3: A closer look at chromosome 8 shows a distribution again with no peaks >1
 
 **Question: is this analysis good enough to confirm X0 or is there more we can do, with the RNA-Seq for example?**
 
-**Answer: We think so, the original genome was based mostly on male data and we should therefore see a clear Y if there was one.**
+**Answer: Yes, the original genome was based mostly on male data and we should therefore see a clear Y if there was one.**
 
 ---
 
