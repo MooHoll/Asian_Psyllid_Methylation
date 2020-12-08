@@ -34,8 +34,10 @@ Summary: TE's successfully annotated using the EDTA pipeline, see [here](./TE_an
     - FPKM per highly binned methylation (violin plot)
 - Differential gene expression and alternative splicing between sexes
     - Identify differentially exp genes and various standard plots
+    - Create a de novo transcriptome to better annotate alt-splice sites? (do we need to do this?)
     - Identifiy differentially alternativly spliced genes
         - check *doublesex*
+        - plot DNMT expression levels (boxplot?)
     - GO enrichment for both
     - Overlap of differentially expressed and differentially alternativy spliced 
 - Relationship of differentially methylated genes and differentially expressed/spliced
