@@ -14,7 +14,7 @@ start=`date +%s`
 #---------------------------------------------
 
 echo "copying data in"
-rsync /data/ross/misc/analyses/asian_psyllid/raw_data/RNA-Seq/*.fq.gz ./
+rsync /data/ross/misc/analyses/asian_psyllid/raw_data/trimmed_RNA-Seq/*.fq.gz ./
 
 echo "doing the shiz"
 for file in $(ls *.gz)
