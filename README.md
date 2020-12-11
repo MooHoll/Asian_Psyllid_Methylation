@@ -32,8 +32,9 @@ For up to date progress see [here](./Differential_expression/Differential_expres
 
 ---
 
-## Future tasks:
+## Task 4: differential DNA methylation between sexes
 
+### To-do list: 
 - Genome-wide DNA methylation differences between males and females
     - Overall levels including non-CpG (boxplots)
     - Chromosome level differences (including sex chromosomes) (I like Mather's et al. density plot better than our current one)
@@ -46,6 +47,14 @@ For up to date progress see [here](./Differential_expression/Differential_expres
     - Relative position in gene (if enriched there)
     - MA / scatter plot 
     - Gene ontology (GO) enrichment of differentially methylated genes 
+
+### Current progress:
+For up to date progress see [here](./Differential_methylation/Differential_methylation.md).
+
+---
+
+## Future tasks:
+
 - Genome-wide relationship between DNA methylation and expression
     - Gene level scatter plots
     - Mean FPKM per binned methylation (line graph)

@@ -11,3 +11,6 @@ The data look beatutiful, no need for any trimming (already done by novagene I b
 
 ## Alignment to the reference genome
 **Methods:** Samples were aligned to the reference genome Diaci v3.0 ([Hosmani et al. 2020](https://www.biorxiv.org/content/10.1101/869685v1)) and also the lambda genome to determine the bisulfite conversion rate using Bismark v0.20.0 ([Krueger and Andrews 2011](https://pubmed.ncbi.nlm.nih.gov/21493656/)).
+
+**Results:**
+We have a problem, 0% reads have aligned to the reference genome or the lambda genome, see [here](https://www.dropbox.com/sh/nnbg3ff8mqrde29/AAAzwR98UImg7NNKR_Qz9wgOa?dl=0). Email Xiudao to get library preparation information to try to see what is going on.
