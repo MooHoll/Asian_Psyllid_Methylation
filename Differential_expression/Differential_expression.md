@@ -14,6 +14,8 @@ NOTE: I downloaded the 'clean' data from Novagene rather than the 'raw' data.
 **Methods:** Samples were aligned to the reference genome Diaci v3.0 ([Hosmani et al. 2020](https://www.biorxiv.org/content/10.1101/869685v1)) using STAR v2.7.3a ([Dobin and Gingeras 2016](10.1002/0471250953.bi1114s51.Mapping)).
 
 **Result:**
-Not good, we don't have a high alignment, only 50-60% when I would hope for >95%, see [here](https://www.dropbox.com/sh/7uhw69wcytcw11w/AACtj_yeM2dUChEr7yHeNZtXa?dl=0). I will look for a method to see if contamination is the issue.
+Alignment rate is 50-60% see [here](https://www.dropbox.com/sh/7uhw69wcytcw11w/AACtj_yeM2dUChEr7yHeNZtXa?dl=0). Sequencing company was happy with this, after chatting to others this may be because whole bodies were used which includes the gut etc. and so probably a lot of bacteria were also sequenced. 
+
+*Currently running RSEM quantification to be able to run the differential gene expression and differential altenative splicing.*
 
 ---
