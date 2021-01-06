@@ -1,4 +1,4 @@
-# Differential expression between male and female Asian Citrus Psyllid
+# Differential expression and alternative splicing between male and female Asian Citrus Psyllid
 
 NOTE: I downloaded the 'clean' data from Novagene rather than the 'raw' data.
 
@@ -18,6 +18,15 @@ Alignment rate is 50-60% see [here](https://www.dropbox.com/sh/7uhw69wcytcw11w/A
 ---
 
 ## Differential expression analysis
-**Methods:** TO WRITE UP TOMORROW.
+**Methods:** RSEM v1.3.3 ([Li and Dewey 2011](http://www.biomedcentral.com/1471-2105/12/323)) was used to calculate gene and transcript abundances and DESEQ2 v1.28.1 ([Love et al. 2014](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-014-0550-8)) was used to determine differentially expressed genes between males and females. A gene was considered differentially expressed if the corrected p-value was &lt;0.05 (adjused for multiple testing using the Benjamini-Hochberg procudure ([Benjamini and Hochberg 1995](http://www.jstor.org/stable/2346101%5Cnhttp://about.jstor.org/terms)) and the log2 fold-change was &gt;1.5.
 
-**Results:** TO WRITE UP TOMORROW, see [here](https://www.dropbox.com/sh/mlx50j6znpqbu0b/AAAKgn_sLn7P0t-cftRPMUJMa?dl=0) for the curent graphs and output files.
+
+**Results:** See [here](https://www.dropbox.com/sh/mlx50j6znpqbu0b/AAAKgn_sLn7P0t-cftRPMUJMa?dl=0) for the curent graphs and output files.
+
+
+---
+
+## Differential alternative splicing analysis
+**Methods:** DEXSeq vX (REF) implemented by IsoformSwitchAnalyzeR vXX (REF) was used to identify differentially alternativly spliced genes between the sexes. A gene was considered differentially alternativly spliced if the corrected p-value was &lt;0.05 (adjused for multiple testing using the Benjamini-Hochberg procudure ([Benjamini and Hochberg 1995](http://www.jstor.org/stable/2346101%5Cnhttp://about.jstor.org/terms)) and the absolute isoform usage difference was &gt;10%.
+
+**Results:** DOING.
