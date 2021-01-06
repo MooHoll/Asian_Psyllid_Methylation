@@ -28,9 +28,10 @@ Fig.1: PCA plot showing the majority of variation between samples is caused by s
 
 <img src="../images/biased_category.jpeg" height="240">
 Fig.2: Stacked bar plot showing the number of differentially expressed genes which display either male or female biased expression.<br/>
+
 ---
 
 ## Differential alternative splicing analysis
 **Methods:** DEXSeq v1.34.1 ([Anders et al. 2012](http://www.genome.org/cgi/doi/10.1101/gr.133744.111)) implemented by IsoformSwitchAnalyzeR v1.10.0 ([Vitting-Seerup and Sandelin 2019](https://doi.org/10.1093/bioinformatics/btz247)) was used to identify differentially alternativly spliced genes between the sexes. A gene was considered differentially alternativly spliced if the corrected p-value was &lt;0.05 (adjused for multiple testing using the Benjamini-Hochberg procudure ([Benjamini and Hochberg 1995](http://www.jstor.org/stable/2346101%5Cnhttp://about.jstor.org/terms)) and the absolute isoform usage difference was &gt;10%.
 
-**Results:** DOING.
+**Results:** Less than 9% of the genes have annotated isoforms, and so I think we should leave this analysis out as it proabbly can't tell us much.

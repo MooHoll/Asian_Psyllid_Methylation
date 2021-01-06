@@ -2,6 +2,8 @@
 
 This project is a collaboration with Dr. Xiudao Yu and Dr. Zhanjun Lu from Gannan Normal Universtiy, Jiangxi, China. We plan to identifiy genome-wide differences in DNA methylation between male and female *Diaphorina citri*, including the relationship of DNA methylation with gene expression and the DNA methylation differences in the sex chromosomes. This [paper](https://doi.org/10.1111/mec.15216) in aphids shows roughly what we want to achieve.
 
+There is a chromosome level genome with annotation and GO terms from this [paper](https://www.biorxiv.org/content/10.1101/869685v1).
+
 ---
 
 ## Task 1: Determine the sex chromosome system
@@ -17,18 +19,13 @@ Summary: TE's successfully annotated using the EDTA pipeline, see [here](./TE_an
 ## Task 3: differential gene expression between sexes
 
 ### To-do list:
-- Differential gene expression and alternative splicing between sexes
-    - Identify differentially exp genes and various standard plots
+- Differential gene expression between sexes *DONE*
+    - Identify differentially exp genes and various standard plots *DONE*
         - plot DNMT expression levels also (boxplot?)
-    - Create a de novo transcriptome to better annotate alt-splice sites? (do we need to do this?)
-    - Identifiy differentially alternativly spliced genes
-        - check *doublesex*
-    - GO enrichment for both
-        - Do we have annotated GO terms? Probably not, use CrowdGO to annotate (ask Maarten if there are any issues)
-    - Overlap of differentially expressed and differentially alternativy spliced 
+    - GO enrichment *Need a new GO term annotation*
 
 ### Current progress:
-For up to date progress see [here](./Differential_expression/Differential_expression.md).
+For up to date progress see [here](./Differential_expression/Differential_expression.md). NOTE: it doesn't look like we can include the alternative splicing analysis as very few isoforms are annotated.
 
 ---
 
@@ -59,8 +56,8 @@ For up to date progress see [here](./Differential_methylation/Differential_methy
     - Gene level scatter plots
     - Mean FPKM per binned methylation (line graph)
     - FPKM per highly binned methylation (violin plot)
-- Relationship of differentially methylated genes and differentially expressed/spliced
+- Relationship of differentially methylated genes and differentially expressed
     - General scatter of overexpressed genes and hypermethtylated genes etc.
     - Male/female biased methylated/expressed enriched on the X?
-    - Overall methylation levels of differentially expressed/spliced
+    - Overall methylation levels of differentially expressed
     - Overall expression levels of differentially methylated

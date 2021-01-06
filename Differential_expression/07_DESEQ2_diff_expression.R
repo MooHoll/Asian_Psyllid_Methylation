@@ -192,4 +192,8 @@ ggplot(res_df, aes(x = log2FoldChange, y = -log10(padj), colour = sig)) +
         axis.title=element_text(size=20),
         legend.position = "none")
 
+#------------------------------------------------------------------
+# Pull out a list of just the differentially expressed genes for the supplementary
+
+
 
