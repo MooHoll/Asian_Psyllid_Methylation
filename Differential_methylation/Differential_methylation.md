@@ -15,4 +15,6 @@ The data look beatutiful, no need for any trimming (already done by novagene I b
 **Results:**
 We have a problem, 0% reads have aligned to the reference genome or the lambda genome, see [here](https://www.dropbox.com/sh/nnbg3ff8mqrde29/AAAzwR98UImg7NNKR_Qz9wgOa?dl=0). 
 
-Xiudao has sent the methods used by Novogene and it all looks standard. They suggest aligning with the dovetail option (although the library does not appear to be PBAT), will try this to see what happens.
+Xiudao has sent the methods used by Novogene and it all looks standard. Novogene suggested aligning using the --dovetail argument and this has done nothing, I have also tried a different lambda genome, also still nothing.
+
+*I am now running the alignment in single ended mode as there may be a problem with the paired-end nature of the data, see [here](https://github.com/FelixKrueger/Bismark/blob/master/Docs/FAQ.md#mapping-strategies-for-paired-end-data)*
