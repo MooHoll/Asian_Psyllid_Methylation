@@ -16,3 +16,5 @@ The data look beatutiful, no need for any trimming (already done by novagene I b
 0% reads have aligned to the reference genome or the lambda genome in paired-end mode. Xiudao sent the methods used by Novogene and it all looked standard. Novogene suggested aligning using the --dovetail argument and this has done nothing. I also tried a different lambda genome and still nada. Following [this](https://github.com/FelixKrueger/Bismark/blob/master/Docs/FAQ.md#mapping-strategies-for-paired-end-data) I have now successfully aligned the reads WOO! I have used single-end mode and we have about 1% of reads aligning to the lambda genome and the conversion looks good. Using just single-end mode (and --pbat for read 2) we get about 30% alignment rate to Diaci v3.0. I'm now decreasing the stringency slightly to try to increase this.
 
 Alignment reports can be found [here](https://www.dropbox.com/sh/nnbg3ff8mqrde29/AAAzwR98UImg7NNKR_Qz9wgOa?dl=0). 
+
+At a first look it appears *D. citri* has about 1% CpG methylation and 0% in a non-CpG context. This is pretty standard for an insect and a useable amount. Exciting!
