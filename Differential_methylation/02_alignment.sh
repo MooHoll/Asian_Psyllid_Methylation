@@ -57,7 +57,7 @@ echo "align to Dcitri read 1"
 for file in $(ls *1.clean.fq.gz)
 do
 	base=$(basename ${file} "1.clean.fq.gz")
-	bismark --multicore 8 -o ./alignment_Dcitri \
+	bismark --score_min L,0,-0.6 --multicore 8 -o ./alignment_Dcitri_trial \
 	--genome $SCRATCH/Dcitri \
 	--single_end ${base}1.clean.fq.gz
 done
@@ -66,13 +66,13 @@ echo "align to Dcitri read 2"
 for file in $(ls *2.clean.fq.gz)
 do
 	base=$(basename ${file} "2.clean.fq.gz")
-	bismark --pbat --multicore 8 -o ./alignment_Dcitri \
+	bismark --score_min L,0,-0.6 --pbat --multicore 8 -o ./alignment_Dcitri_trial \
 	--genome $SCRATCH/Dcitri \
 	--single_end ${base}2.clean.fq.gz
 done
 
 echo "moving Dcitri outputs"
-mv ./alignment_Dcitri /data/ross/misc/analyses/asian_psyllid/4_methylation
+mv ./alignment_Dcitri_trial /data/ross/misc/analyses/asian_psyllid/4_methylation
 
 echo "a clean directory is a happy directory"
 rm -r $SCRATCH/*
