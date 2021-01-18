@@ -20,3 +20,5 @@ Alignment reports can be found [here](https://www.dropbox.com/sh/nnbg3ff8mqrde29
 At a first look it appears *D. citri* has about 1% CpG methylation and 0% in a non-CpG context. This is pretty standard for an insect and a useable amount. Exciting!
 
 ---
+
+**Currently running deduplication.**
