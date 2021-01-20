@@ -17,8 +17,14 @@ The data look beatutiful, no need for any trimming (already done by novagene I b
 
 Alignment reports can be found [here](https://www.dropbox.com/sh/nnbg3ff8mqrde29/AAAzwR98UImg7NNKR_Qz9wgOa?dl=0). 
 
-At a first look it appears *D. citri* has about 1% CpG methylation and 0% in a non-CpG context. This is pretty standard for an insect and a useable amount. Exciting!
+*D. citri* has about 1% CpG methylation and 0% in a non-CpG context. This is pretty standard for an insect and a useable amount. Exciting! Around 20% of sequences are PCR duplicates (standard), after removing duplicates we have a final coverage of 13X on average, this is ok.
 
 ---
 
-**Currently running deduplication.**
+Calculate genome size (total bases) for coverage calculation:
+
+`grep -v ">" Diaci_v3.0.ref.fa | tr -d '\n' | wc -c`
+
+---
+
+**Currently running full pipeline to differential methylation.**
