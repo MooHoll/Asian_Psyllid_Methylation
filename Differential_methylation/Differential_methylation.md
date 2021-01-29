@@ -26,5 +26,13 @@ Calculate genome size (total bases) for coverage calculation:
 `grep -v ">" Diaci_v3.0.ref.fa | tr -d '\n' | wc -c`
 
 ---
+## Differential DNA methylation between males and females
+**Methods:** Coverage outliers (above the 99.9th percentile) and bases with less than 10 reads were removed and only CpG positions meeting these criteria in all samples were kept. CpG sites were the filtered to keep only sites which were methyhlated in at least one sample for differential DNA methylation testing. This was done by running a binomial test per position where the probability of success was the bisulfite non-conversion rate, p-values were corrected for multiple testing using the Benjamini-Hochberg method and a site was classed as methylated if the corrected p-value was &lt;0.05. A logistic regression model was then applied via the R package MethylKit (REF) to determine differentially methylated CpG positions between males and females. A CpG was classed as differentially methylated if the corrected q-value was &lt;0.05 and the absolubte methylation difference was &gt;15%.
 
-**Currently running full pipeline to differential methylation.**
+**Results:** A total of 107,710 CpG sites were classed as methylated in at least one sample. Samples show good correlation with each other showing the majority of CpG methylation is stable between the sexes (Fig.1). Males and females cluster relativly well although M2 and F3 cluster together, this may possibly be driven by the genotype / realtedness of the pools of individuals (Fig.2). 599 sites were differentially methylated between males and females (q &lt;0.05 and minimum methylation difference &gt;15%). (ADD MORE RESULTS HERE ONCE HAVE THEM).
+
+<img src="../images/F_vs_M_correlation.jpeg" height="240">
+Fig.1: Correlation across samples for all tested CpG positions (N=107,710).<br/>
+
+<img src="../images/PCA_1_and_2.jpeg" height="240">
+Fig.2: PCA plot based on all tested CpG positions (N=107,710).<br/>

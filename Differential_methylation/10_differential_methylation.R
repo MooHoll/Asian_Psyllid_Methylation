@@ -1,14 +1,10 @@
 ## -------------------------------------------------------------------------
-## Differential Methylation Between Female and Male P.citri
+## Differential Methylation Between Female and Male D.citri
 ## -------------------------------------------------------------------------
-# Can't get -I job on qm right now so run on alice as submitted job for 4hrs!
 
 # Load packages etc.
 library(methylKit)
-library(grid)
 library(readr)
-library(ggplot2)
-library(sqldf)
 
 ## -------------------------------------------------------------------------
 # Put in the correct comparison below, see script: 08_comparisons_diff_meth.R
@@ -35,7 +31,7 @@ normalized <- normalizeCoverage(filtered_data)
 
 # Only use CpGs present in all samples (maybe too stringent, can adjust later)
 meth_all_data <- unite(normalized, destrand=TRUE) 
-nrow(meth_all_data) # 3660906
+nrow(meth_all_data) # 3206305
 
 ## -------------------------------------------------------------------------
 
@@ -63,8 +59,9 @@ for (df in list(a,b,c,d,e,f)) {
   dfmeth <- subset(df, df$FDR < 0.05)
   allrows <- rbind(allrows, dfmeth)
 }
+
 meth_positions <- as.vector(as.numeric(unique(allrows$row))) 
-length(meth_positions) # 2774656
+length(meth_positions) # 107710
 
 subset_methBase <- methylKit::select(meth_all_data, meth_positions)
 
@@ -92,15 +89,24 @@ dev.off()
 
 ## -------------------------------------------------------------------------
 
-# Differential methylation
+# Differential methylation as group 1 minus group 0
 diff_meth <- calculateDiffMeth(subset_methBase, mc.cores = 1)
 write.csv(diff_meth, file="F_vs_M__all_tested_meth_sites_MSCfilter.csv")
 
 diff_meth_10 <- getMethylDiff(diff_meth, difference=10, qvalue=0.05)
 write.csv(diff_meth_10, file="F_vs_M__DMRs_min10percentDiff_qval0.05.csv")
-nrow(diff_meth_10) # 401615
+nrow(diff_meth_10) # 3112/107710
 
+diff_meth_10 <- getMethylDiff(diff_meth, difference=10, qvalue=0.01)
+write.csv(diff_meth_10, file="F_vs_M__DMRs_min10percentDiff_qval0.01.csv")
+nrow(diff_meth_10) # 763/107710
+
+diff_meth_15 <- getMethylDiff(diff_meth, difference=25, qvalue=0.01)
+write.csv(diff_meth_15, file="F_vs_M__DMRs_min25percentDiff_qval0.01.csv")
+nrow(diff_meth_15) # 261/107710
+
+# Use this threshold
 diff_meth_15 <- getMethylDiff(diff_meth, difference=15, qvalue=0.01)
 write.csv(diff_meth_15, file="F_vs_M__DMRs_min15percentDiff_qval0.01.csv")
-nrow(diff_meth_10) # 182985
+nrow(diff_meth_15) # 600/107710
 
