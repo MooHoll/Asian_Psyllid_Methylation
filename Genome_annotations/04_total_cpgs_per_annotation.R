@@ -15,12 +15,14 @@ library(doBy)
 cpgs <- read.delim("total_cpgs_in_genome.txt", header=F)
 colnames(cpgs) <- c("chr", "cpg_position")
 cpgs$cpg_position <- as.numeric(cpgs$cpg_position)
+head(cpgs)
 
 # --------------------------------------------------------------------
 
 genes <- read.delim("Dcitr_OGSv3.0_beta_longestIsoform_plusIntrons_plusPromoters_plusTEs_plusIntergenic.txt", header=T)
 genes$start <- as.numeric(genes$start)
 genes$end <- as.numeric(genes$end)
+head(genes)
 
 output <- sqldf("SELECT cpgs.chr,
                 cpgs.cpg_position,
