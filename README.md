@@ -38,9 +38,9 @@ For up to date progress see [here](./Differential_expression/Differential_expres
     - PCA clustering
     - Mean feature levels (e.g. promotors/exons etc.)
     - Counts in high/medium/low/no bins per feature
-    - Exon/intron average levels per gene, **ask Rahia for code**
+    - Exon/intron average levels per gene, **NEED TO DO THIS BEFORE CAN MOVE ON SO CAN FIGURE OUT IF NEED TO SPLIT EXONS INTO BINS, E.G. EXONS 1-3)**
 - Differential DNA methylation on the CpG and feature level
-    - Location of differentially methylated CpGs and count
+    - Location of differentially methylated CpGs and count (could also include a manhatten plot)
     - Relative position in gene (if enriched there)
     - MA / scatter plot 
     - Gene ontology (GO) enrichment of differentially methylated genes 

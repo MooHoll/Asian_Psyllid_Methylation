@@ -95,7 +95,7 @@ ggplot(summary_all, aes(x=Feature, y=Weighted_Methylation, fill=Sex))+
         legend.text = element_text(size=20),
         legend.title = element_blank())+
   scale_fill_manual(breaks = c("female","male"),labels=c("Female","Male"),
-                    values=c("pink1","steelblue1"))+
+                    values=c("#44AA99","#6699CC"))+
   scale_x_discrete(breaks = c("promotors_2000bp","exon_first3","exon_notFirst3","intron","TE","intergenic"),
                    labels = c("Promtors","Exons 1-3","Exons 4+","Introns","TEs","Intergenic"),
                    limits =c("promotors_2000bp","exon_first3","exon_notFirst3","intron","TE","intergenic"))
