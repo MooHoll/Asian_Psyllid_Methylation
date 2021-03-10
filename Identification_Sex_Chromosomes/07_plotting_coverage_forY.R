@@ -39,9 +39,23 @@ full_plot <- ggplot(all_data, aes (x=male2female_logratio, fill=scf))+
 
 full_plot #Doesn't initially appear to show a diverged Y
 
+full_plot +
+  xlab("log2(male copies / female copies)")+
+  ylab("Count")+
+  scale_fill_discrete(name="Chromosome")+
+  theme(legend.text = element_text(size=20),
+        legend.title = element_text(size=20),
+        axis.text = element_text(size=20),
+        axis.title = element_text(size=26))
+
+
 # Check each chromosome individually
 full_plot + facet_grid(scf ~ .) +
-  theme(legend.position = "none") # Still looks like no divergeed Y
+  xlab("log2(male copies / female copies)")+
+  ylab("Count")+
+  theme(legend.position = "none",
+        axis.text = element_text(size=14),
+        axis.title = element_text(size=22)) # Still looks like no divergeed Y
 
 # Just to be sure with this method I will check each chromosome in it's own plot (more resolution)
 for(i in unique(all_data$scf)){
@@ -51,6 +65,17 @@ for(i in unique(all_data$scf)){
     theme_bw()
   ggsave(filename = sprintf('%s.png', i), plot = plot1)
 } # Still no diverged Y
+
+all_data_subset <- all_data[all_data$scf=="08",]
+ggplot(all_data_subset,aes(x = male2female_logratio)) +
+  geom_histogram(bins=100)+
+  annotate("text", x=0.5, y=225, label="Chromosome 08", size=10)+
+  xlim(-1.2, 1.2)+
+  theme_bw()+
+  xlab("log2(male copies / female copies)")+
+  ylab("Count")+
+  theme(axis.text = element_text(size=20),
+        axis.title = element_text(size=26))
 
 # Take a look at the raw sequences
 look_for_about0_in_female <- all_data[all_data$female_depth <=3,]

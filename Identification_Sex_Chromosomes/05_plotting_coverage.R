@@ -58,15 +58,15 @@ colnames(plot_depth_data2) <- c("Chromosome","Sex","Copies")
 plot_depth_data2$Chromosome <- gsub("DC3.0sc", "", plot_depth_data2$Chromosome)
 
 ggplot(plot_depth_data2, aes(x=Chromosome, y= Copies, fill=Sex))+
-  geom_bar(stat="identity", position="dodge")+
-  scale_fill_manual(values = c("steelblue","lightpink"),
+  geom_bar(stat="identity", position="dodge", colour="black")+
+  scale_fill_manual(values = c("#44AA99","#DDCC77"),
                     limits = c("male_copies","female_copies"),
                     labels = c("Male","Female"))+
   theme_bw()+
-  theme(axis.title = element_text(size=14),
-        axis.text = element_text(size=12),
-        legend.text = element_text(size=12),
+  theme(axis.title = element_text(size=28),
+        axis.text = element_text(size=20),
+        legend.text = element_text(size=28),
         legend.title = element_blank())
 
-
-
+# 6699CC
+#   scale_fill_manual(values = c("#0072B2","#E69F00"),
