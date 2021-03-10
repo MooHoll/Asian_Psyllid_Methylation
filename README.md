@@ -23,6 +23,8 @@ Summary: TE's successfully annotated using the EDTA pipeline, see [here](./TE_an
     - Identify differentially exp genes and various standard plots *DONE*
         - plot DNMT expression levels also (boxplot?)
     - GO enrichment *Need a new GO term annotation*
+    - Identify where the sex-biased genes are (see the other psyllid paper, Li et al. 2020 MBE)
+    - Question: do we want to look at selection on these genes? Andrew?
 
 ### Current progress:
 For up to date progress see [here](./Differential_expression/Differential_expression.md). NOTE: it doesn't look like we can include the alternative splicing analysis as very few isoforms are annotated.
