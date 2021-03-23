@@ -12,6 +12,7 @@ cd $SCRATCH
 start=`date +%s`
 
 #---------------------------------------------
+# conda activate R_env
 
 echo "copying data in"
 rsync /data/ross/misc/analyses/asian_psyllid/genome/total_cpgs_in_genome.txt ./

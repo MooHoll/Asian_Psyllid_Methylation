@@ -3,8 +3,6 @@
 #------------------------------------------------------------------
 
 setwd("~/Dropbox/Edinburgh/Projects/Asian_psyllid/Gene_Expression/Differential_expression")
-
-library(tximportData)
 library(DESeq2)
 library(ggplot2)
 library(ggrepel)
@@ -12,6 +10,8 @@ library(RColorBrewer)
 library(pheatmap)
 library(PoiClaClu)
 library(apeglm)
+library(tximportData)
+library(tximport)
 
 #------------------------------------------------------------------
 # Make sample metadata
@@ -46,19 +46,19 @@ rld = rlog(dds, blind=FALSE)
 data = plotPCA(rld, intgroup = c("sex"), returnData=TRUE)
 percentVar = round(100 * attr(data, "percentVar"))
 
-ggplot(data, aes(PC1, PC2, color=sex)) + geom_point(size=10) +
+ggplot(data, aes(PC1, PC2, color=sex)) + geom_point(size=14) +
   xlab(paste0("PC1: ",percentVar[1],"% variance")) +
   ylab(paste0("PC2: ",percentVar[2],"% variance")) +
-  coord_fixed(ratio=2,clip = "on")+
-  geom_text_repel(aes(label=name), size=8,show.legend=FALSE, 
+  coord_fixed(ratio=4,clip = "on")+
+  geom_text_repel(aes(label=name), size=10,show.legend=FALSE, 
                   point.padding = 2, box.padding = 1,
                   segment.color = 'transparent') +
   scale_colour_manual("", breaks=c("Female","Male"),
-                      values = c("#44AA99","#6699CC"))+
+                      values = c("#DDCC77","#44AA99"))+
   theme_bw()+
-  theme(axis.text=element_text(size=18),
-        axis.title=element_text(size=20),
-        legend.text=element_text(size=20))
+  theme(axis.text=element_text(size=22),
+        axis.title=element_text(size=24),
+        legend.text=element_text(size=24))
 
 # two 1st samples plotted against each other to check consistency (for rlog and log2) 
 par( mfrow = c( 1, 2 ) )
@@ -140,7 +140,8 @@ n=50
 topdiff = head(c(1:nrow(res))[order(res$padj)],n)
 
 my_colors = list(
-  sex = c(Female = "#44AA99", Male ="#6699CC"))
+  sex = c(Female = "#DDCC77", Male ="#44AA99"))
+
 
 mat = assay(rld)[ topdiff, ]
 mat = mat - rowMeans(mat)
@@ -169,7 +170,7 @@ ggplot(data, aes(x=sex, y=count, fill=sex)) +
         axis.text.y=element_text(size=18),
         plot.title = element_text(size=22))+
   scale_fill_manual("", breaks=c("Female","Male"),
-                      values = c("#44AA99","#6699CC"))
+                    values = c("#DDCC77","#44AA99"))
 
 #------------------------------------------------------------------
 # Volcano plot

@@ -6,6 +6,10 @@ setwd("~/Dropbox/Edinburgh/Projects/Asian_psyllid/Gene_Expression/Differential_e
 
 library(readr)
 library(reshape2)
+library(ggplot2)
+library(tidyr)
+library(dplyr)
+library(ggforce)
 
 #------------------------------------------------------------------
 # log2FC from diff exp
@@ -62,6 +66,20 @@ all_data <- merge(fpkm_data, diff_exp_log2FC_all, by = "gene_id")
 
 # 12420/19049 annotated genes as removed genes with low count during diff exp pipeline (mean fpkm < 10)
 
+# Measure of specificity for gene expression
+all_data$female_sq <- all_data$female_fpkm_mean*all_data$female_fpkm_mean
+all_data$male_sq <- all_data$male_fpkm_mean*all_data$male_fpkm_mean
+all_data$SPM <- all_data$female_sq/(all_data$female_sq +all_data$male_sq )
+
+ggplot(all_data, aes ( x= SPM))+
+  geom_histogram(colour="black", bins=50)+
+  xlab("SPM Relative to Females")+
+  ylab("Number of Genes")+
+  theme_bw()+
+  theme(axis.text=element_text(size=20),
+        axis.title=element_text(size=22),
+        legend.text = element_text(size=22))
+
 #------------------------------------------------------------------
 # Add gene categories for plotting
 all_data$diff_exp <- "no"
@@ -104,17 +122,100 @@ ggplot(all_data_plot, aes(x=biased, fill=category))+
   theme(axis.text=element_text(size=20),
         axis.title=element_text(size=22),
         legend.text = element_text(size=22))
+#------------------------------------------------------------------
+head(all_data)
+all_data$female_log_fpkm <- log10(all_data$female_fpkm_mean)
+all_data$male_log_fpkm <- log10(all_data$male_fpkm_mean)
 
-# Measure of specificity for gene expression
-all_data_plot$female_sq <- all_data_plot$female_fpkm_mean*all_data_plot$female_fpkm_mean
-all_data_plot$male_sq <- all_data_plot$male_fpkm_mean*all_data_plot$male_fpkm_mean
-all_data_plot$SPM <- all_data_plot$female_sq/(all_data_plot$female_sq +all_data_plot$male_sq )
+scatter_data <- all_data[,c(1,17:19)]
 
-ggplot(all_data_plot, aes ( x= SPM))+
-  geom_histogram(colour="black", bins=50)+
-  xlab("SPM Relative to Females")+
-  ylab("Number of Genes")+
+ggplot(scatter_data, aes(x=female_log_fpkm, y=male_log_fpkm, colour=category))+
+  geom_point(size=3)+
+  xlim(-1.5,4)+
+  ylim(-1.5,4)+
+  scale_colour_manual("",breaks=c("unbiased","male_biased","male_biased_extreme","male_limited",
+                               "female_biased","female_limited"),
+                      labels=c("Unbiased","Male Biased","Male Extreme Biased","Male Limited",
+                               "Female Biased","Female Limited"),
+                      values=c("grey","#44AA99","springgreen4","darkgreen","#DDCC77","goldenrod"))+
   theme_bw()+
+  xlab("Log10(Female FPKM)")+
+  ylab("Log10(Male FPKM)")+
   theme(axis.text=element_text(size=20),
         axis.title=element_text(size=22),
         legend.text = element_text(size=22))
+
+#------------------------------------------------------------------
+# Look for X chromosome enrichment of sex biased genes
+
+head(all_data)
+all_data1 <- separate(all_data, gene_id, into=c("chromosome", "gene_id"), sep="g")
+head(all_data1)
+
+autosomes <- all_data1[!all_data1$chromosome == "Dcitr08",]
+x_chorm <- all_data1[(all_data1$chromosome == "Dcitr08"),]
+
+ggplot(autosomes, aes(x=category))+
+  geom_bar(stat = "count")
+
+ggplot(x_chorm, aes(x=category))+
+  geom_bar(stat = "count")
+
+
+autosomes <- autosomes[,c(1,18)]
+x_chorm <- x_chorm[,c(1,18)]
+
+autosomes_percent <- autosomes %>% 
+  group_by(category) %>% 
+  summarise(count = n()) %>% 
+  mutate(perc = 100*(count/sum(count)))
+
+x_chorm_percent <- x_chorm %>% 
+  group_by(category) %>% 
+  summarise(count = n()) %>% 
+  mutate(perc = 100*(count/sum(count)))
+
+ggplot(autosomes_percent, aes(x=category, y=perc, fill=category))+
+  geom_bar(stat="identity")+
+  facet_zoom(ylim = c(0, 8))+
+  xlab("Gene Expression Category")+
+  ylab("Percentage of Genes (%)")+
+  ggtitle("Autosomes")+
+  scale_fill_manual("",limits=c("unbiased","male_biased","male_biased_extreme","male_limited",
+                                  "female_biased","female_limited"),
+                      values=c("darkgrey","#44AA99","springgreen4","darkgreen","#DDCC77","goldenrod"))+
+  scale_x_discrete(limits=c("unbiased","male_biased","male_biased_extreme","male_limited",
+                            "female_biased","female_limited"),
+                   labels=c("Unbiased","Male Biased","Male Extreme Biased","Male Limited",
+                            "Female Biased","Female Limited"))+
+  theme_bw()+
+  theme(axis.text.x=element_text(size=20, angle = 45, vjust = 1, hjust=1),
+        axis.text.y = element_text(size=20),
+        axis.title=element_text(size=22),
+        legend.position = "none",
+        title = element_text(size=22))
+  
+
+ggplot(x_chorm_percent, aes(x=category, y=perc, fill=category))+
+  geom_bar(stat="identity")+
+  facet_zoom(ylim = c(0, 8))+
+  xlab("Gene Expression Category")+
+  ylab("Percentage of Genes (%)")+
+  ggtitle("X Chromosome")+
+  scale_fill_manual("",limits=c("unbiased","male_biased","male_biased_extreme","male_limited",
+                                "female_biased","female_limited"),
+                    values=c("darkgrey","#44AA99","springgreen4","darkgreen","#DDCC77","goldenrod"))+
+  scale_x_discrete(limits=c("unbiased","male_biased","male_biased_extreme","male_limited",
+                            "female_biased","female_limited"),
+                   labels=c("Unbiased","Male Biased","Male Extreme Biased","Male Limited",
+                            "Female Biased","Female Limited"))+
+  theme_bw()+
+  theme(axis.text.x=element_text(size=20, angle = 45, vjust = 1, hjust=1),
+        axis.text.y = element_text(size=20),
+        axis.title=element_text(size=22),
+        legend.position = "none",
+        title = element_text(size=22))
+
+
+
+
