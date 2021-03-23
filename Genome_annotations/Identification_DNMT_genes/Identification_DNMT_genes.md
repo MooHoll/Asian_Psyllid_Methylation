@@ -6,19 +6,19 @@ Download protein fasta sequences of the above from NCBI.
 
 Make a Blast database from the protein sequences of the recent genome annotation:
 
-`/ceph/software/blast/ncbi-blast-2.8.0+/bin/makeblastdb \
--in Dcitr_OGSv3.0_beta_pep.fa \
--dbtype prot \
--parse_seqids \
+`/ceph/software/blast/ncbi-blast-2.8.0+/bin/makeblastdb 
+-in Dcitr_OGSv3.0_beta_pep.fa 
+-dbtype prot 
+-parse_seqids 
 -out D_citri_protein_db`
 
 Blast each of the three proteins
 
-`/ceph/software/blast/ncbi-blast-2.8.0+/bin/blastp -query DNMT2.fa \
--db D_citri_protein_db \
--num_threads 10 \
--max_target_seqs 1 \
--outfmt 6 \
+`/ceph/software/blast/ncbi-blast-2.8.0+/bin/blastp -query DNMT2.fa 
+-db D_citri_protein_db 
+-num_threads 10 
+-max_target_seqs 1 
+-outfmt 6 
 -evalue 1e-3 > DNMT2.txt`
 
 DNMT1-1 : XP_008474257.1 : Dcitr08g10610.1.2
