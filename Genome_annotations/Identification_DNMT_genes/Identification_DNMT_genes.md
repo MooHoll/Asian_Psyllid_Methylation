@@ -22,5 +22,7 @@ Blast each of the three proteins
 -evalue 1e-3 > DNMT2.txt`
 
 DNMT1-1 : XP_008474257.1 : Dcitr08g10610.1.2
+
 DNMT1-2 : XP_008481189.1 : Dcitr08g05090.1.1
+
 DMMT2 : XP_008470452.1 : Dcitr07g04270.1.1
