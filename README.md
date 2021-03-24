@@ -19,10 +19,10 @@ Summary: TE's successfully annotated using the EDTA pipeline, see [here](./TE_an
 ## Task 3: differential gene expression between sexes
 
 ### To-do list:
-    - Plot DNMT expression levels also (boxplot?)
-    - GO enrichment *Need a new GO term annotation*
-    - Identify where the sex-biased genes are (see the other psyllid paper, Li et al. 2020 MBE)
-    - Question: do we want to look at selection on these genes? Andrew?
+- Plot DNMT expression levels also (boxplot?)
+- GO enrichment *Need a new GO term annotation*
+- Identify where the sex-biased genes are (see the other psyllid paper, Li et al. 2020 MBE)
+- Question: do we want to look at selection on these genes? Andrew?
 
 
 **Current progress:**
