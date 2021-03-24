@@ -19,14 +19,14 @@ Summary: TE's successfully annotated using the EDTA pipeline, see [here](./TE_an
 ## Task 3: differential gene expression between sexes
 
 ### To-do list:
-- Differential gene expression between sexes *DONE*
-    - Identify differentially exp genes and various standard plots *DONE*
-        - plot DNMT expression levels also (boxplot?)
+    - Plot DNMT expression levels also (boxplot?)
     - GO enrichment *Need a new GO term annotation*
     - Identify where the sex-biased genes are (see the other psyllid paper, Li et al. 2020 MBE)
     - Question: do we want to look at selection on these genes? Andrew?
 
-### Current progress:
+
+**Current progress:**
+
 For up to date progress see [here](./Differential_expression/Differential_expression.md). NOTE: it doesn't look like we can include the alternative splicing analysis as very few isoforms are annotated.
 
 ---
@@ -40,14 +40,15 @@ For up to date progress see [here](./Differential_expression/Differential_expres
     - PCA clustering
     - Mean feature levels (e.g. promotors/exons etc.)
     - Counts in high/medium/low/no bins per feature
-    - Exon/intron average levels per gene, **NEED TO DO THIS BEFORE CAN MOVE ON SO CAN FIGURE OUT IF NEED TO SPLIT EXONS INTO BINS, E.G. EXONS 1-3)**
+    - Exon/intron average levels per gene, **NEED TO DO THIS BEFORE CAN MOVE ON SO CAN FIGURE OUT IF NEED TO SPLIT EXONS INTO BINS, E.G. EXONS 1-3 ... this is proving tricky ...)**
 - Differential DNA methylation on the CpG and feature level
     - Location of differentially methylated CpGs and count (could also include a manhatten plot)
     - Relative position in gene (if enriched there)
     - MA / scatter plot 
     - Gene ontology (GO) enrichment of differentially methylated genes 
 
-### Current progress:
+**Current progress:**
+
 For up to date progress see [here](./Differential_methylation/Differential_methylation.md).
 
 ---
