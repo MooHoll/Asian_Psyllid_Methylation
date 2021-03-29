@@ -19,8 +19,12 @@ rsync /data/ross/misc/analyses/asian_psyllid/genome/total_cpgs_in_genome.txt ./
 rsync /data/ross/misc/analyses/asian_psyllid/windows.bed ./
 rsync /data/ross/misc/analyses/asian_psyllid/logs/total_cpgs_per_annotation.R ./
 
+# Split windows file into 10 files making sure not to break lines
+split -n l/20 windows.bed
+
 echo "doing the shiz"
 R --save -f total_cpgs_per_annotation.R
+
 
 echo "moving outputs"
 mv windows_with_total_cpgs.txt /data/ross/misc/analyses/asian_psyllid
