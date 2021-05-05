@@ -9,7 +9,7 @@ library(dplyr)
 library(foreach)
 library(doParallel)
 
-# Read in sample methylation count files
+# Read in sample methylation count files edited from the bismark files
 file.list = list.files(("./"),pattern="*final_coverage.txt")
 
 read_file1 <- function(x){
@@ -17,19 +17,39 @@ read_file1 <- function(x){
 }
 
 samples <- lapply(file.list, read_file1)
-sample_names <- list("F1_R1", "F1_R2", "F2_R1","F2_R2", "F3_R1", "F3_R2",
-                    "M1_R1", "M1_R2", "M2_R1","M2_R2", "M3_R1", "M3_R2")
-names(samples) <- sample_names
 
-# Read in gene with start/end and total CpGs per gene
+# Merge the samples from this point to save generating loads of files and merging later
+females <- bind_rows(samples[1:6])
+males <- bind_rows(samples[7:12])
+
+females <- summaryBy(total_coverage + count_c ~ chr + cpg, data=females, FUN=sum)
+males <- summaryBy(total_coverage + count_c ~ chr + cpg, data=males, FUN=sum)
+
+colnames(females) <- c("chr","cpg","total_coverage","count_c")
+colnames(males) <- c("chr","cpg","total_coverage","count_c")
+
+females$chr <- as.factor(females$chr)
+males$chr <- as.factor(males$chr)
+
+females$cpg <- as.numeric(females$cpg)
+males$cpg <- as.numeric(males$cpg)
+
+both <- list(females,males)
+sample_names <- list("female","male")
+names(both) <- sample_names
+
+# Read in window with start/end and total CpGs per gene
 annotation_with_total_cpgs <- read_table2("windows_with_total_cpgs.txt")
-
+colnames(annotation_with_total_cpgs) <- c("id","chr","start","end","cpg_count")
+annotation_with_total_cpgs$chr <- as.factor(annotation_with_total_cpgs$chr)
+annotation_with_total_cpgs$start <- as.numeric(annotation_with_total_cpgs$start)
+annotation_with_total_cpgs$end <- as.numeric(annotation_with_total_cpgs$end)
 ## -------------------------------------------------------------------------
-registerDoParallel(cores = 10)
+registerDoParallel(cores = 2)
 
 # Calculate weighted meth for each gene for each sample
-foreach(i = seq_along(samples)) %dopar% {
-  df <- samples[[i]]
+foreach(i = seq_along(both)) %dopar% {
+  df <- both[[i]]
   df <- subset(df, total_coverage > 5)
   output <- sqldf("SELECT sample.chr,
                     sample.cpg,
@@ -48,7 +68,7 @@ foreach(i = seq_along(samples)) %dopar% {
   output <- output[,-c(1,2)]
   check <- summaryBy(total_coverage + count_c ~ chr + id + start + end + cpg_count, data=output, FUN=sum) 
   check$weightedMeth <- (check$cpg_count*check$count_c.sum)/(check$cpg_count*check$total_coverage.sum)
-  myfile <- file.path("./", paste0(names(samples[i]),"_","weighted_meth.txt"))
+  myfile <- file.path("./", paste0(names(both[i]),"_","weighted_meth.txt"))
   write.table(check, file=myfile, quote=F, sep="\t", row.names=F)
 }
 

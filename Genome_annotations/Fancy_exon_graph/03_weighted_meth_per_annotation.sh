@@ -12,14 +12,15 @@ cd $SCRATCH
 start=`date +%s`
 
 #---------------------------------------------
+# conda activate R_env
 
 echo "copying data in"
 rsync /data/ross/misc/analyses/asian_psyllid/4_methylation/coverage_files/*.txt ./
-rsync /data/ross/misc/analyses/asian_psyllid/genome/windows_with_total_cpgs.txt ./
+rsync /data/ross/misc/analyses/asian_psyllid/windows_with_total_cpgs.txt ./
 rsync /data/ross/misc/analyses/asian_psyllid/logs/weighted_meth_per_sample.R ./
 
 echo "doing the shiz"
-R --save -f weighted_meth_per_sample.R
+R --no-restore --save -f weighted_meth_per_sample.R
 
 echo "moving outputs"
 mv ./*weighted_meth.txt /data/ross/misc/analyses/asian_psyllid
