@@ -16,6 +16,7 @@ library(reshape2)
 library(dplyr)
 library(Hmisc)
 library(scales)
+library(ggpubr)
 ## -------------------------------------------------------------------------
 annotation <- read_delim("Dcitri_weighted_meth_annotation_by_sex.txt", 
                          "\t", escape_double = FALSE, trim_ws = TRUE)
@@ -95,130 +96,51 @@ ggplot(summary_all, aes(x=Feature, y=Weighted_Methylation, fill=Sex))+
         legend.text = element_text(size=20),
         legend.title = element_blank())+
   scale_fill_manual(breaks = c("female","male"),labels=c("Female","Male"),
-                    values=c("#44AA99","#6699CC"))+
-  scale_x_discrete(breaks = c("promotors_2000bp","exon_first3","exon_notFirst3","intron","TE","intergenic"),
-                   labels = c("Promtors","Exons 1-3","Exons 4+","Introns","TEs","Intergenic"),
-                   limits =c("promotors_2000bp","exon_first3","exon_notFirst3","intron","TE","intergenic"))
+                    values=c("#DDCC77","#44AA99"))+
+  scale_x_discrete(breaks = c("promoter","five_prime_UTR","three_prime_UTR","gene","exon","intron","TE","intergenic"),
+                   labels = c("Promoter","5' UTR","3' UTR","Gene","Exon","Intron","TE","Intergenic"),
+                   limits =c("promoter","five_prime_UTR","three_prime_UTR","gene","exon","intron","TE","intergenic"))
 
 # Stats
 library(multcomp)
-model1<-lm(Weighted_Meth ~ Sex * Feature , data=melted_meth_stuff)
-model2<-lm(Weighted_Meth ~ Sex + Feature , data=melted_meth_stuff)
-anova(model1,model2) # Sig interaction
-summary.lm(model1) # Everything sig
+head(melted_annot)
+model1<-lm(Weighted_Methylation ~ Sex * Feature , data=melted_annot)
+model2<-lm(Weighted_Methylation ~ Sex + Feature , data=melted_annot)
+anova(model1,model2) # No interaction
+summary.lm(model2) # Everything sig
 
-for_stats <- melted_meth_stuff
+for_stats <- melted_annot
 for_stats$SHD<-interaction(for_stats$Sex,
                            for_stats$Feature)
-model1_new<-lm(Weighted_Meth~-1+SHD, data=for_stats)
+model1_new<-lm(Weighted_Methylation~-1+SHD, data=for_stats)
 summary(glht(model1_new,linfct=mcp(SHD="Tukey"))) 
-# Everything is different except: 
-# male intergenic and female exon 1-3
-# male TE and male exon 1-3
-# male intron and female intergenic
-# male and female promotors
 
 ## -------------------------------------------------------------------------
 # Different categories
-head(melted_meth_stuff)
-meth_low <- melted_meth_stuff[melted_meth_stuff$Weighted_Meth <= 0.3,]
-meth_medium <- melted_meth_stuff[melted_meth_stuff$Weighted_Meth > 0.3 &
-                                   melted_meth_stuff$Weighted_Meth < 0.7,]
-meth_high <- melted_meth_stuff[melted_meth_stuff$Weighted_Meth >= 0.7,]
+head(melted_annot)
+#limits =c("promoter","five_prime_UTR","three_prime_UTR","gene","exon","intron","TE","intergenic"))
+look <- melted_annot[melted_annot$Feature=="intergenic",]
+hist(look$Weighted_Methylation[look$Weighted_Methylation > 0.05], main = "Intergenic methylation level distribution",
+     xlab = "Weighted Methylation", cex.lab=1.5, cex.axis=1.5, cex.main=2, cex.sub=1.5)
 
-summary_all_high<-summarySE(meth_high, measurevar = "Weighted_Meth", 
-                       groupvars = c("Feature","Sex"))
-
-a1 <- ggplot(summary_all_high, aes(x=Feature, y=Weighted_Meth, fill=Sex))+
-  geom_bar(position = position_dodge(), stat = "identity")+
-  geom_errorbar(aes(ymin=Weighted_Meth-ci, ymax=Weighted_Meth+ci),
-                width=.2,
-                position = position_dodge(.9))+
-  #geom_text(aes(label = summary_all$N, x = Feature), 
-   #         position = position_dodge(width = 0.9), vjust = -1)+ 
-  theme_bw()+
- # xlab("")+
- # ylab("Mean Weighted Methylation Level per Feature")+
-  ggtitle("High Methylation")+
-  theme(axis.text.y=element_text(size=10),
-        axis.text.x=element_text(angle=45,hjust=1,size=10),
-        axis.title=element_blank(),
-        plot.title=element_text(size = 12),
-        legend.text = element_text(size=10),
-        legend.title = element_text(size=12))+
-  scale_fill_manual(breaks = c("female","male"),labels=c("Female","Male"),
-                    values=c("pink1","steelblue1"))+
-  scale_x_discrete(breaks = c("promotors_2000bp","exon_first3","exon_notFirst3","intron","TE","intergenic"),
-                   labels = c("Promtors","Exons 1-3","Exons 4+","Introns","TEs","Intergenic"),
-                   limits =c("promotors_2000bp","exon_first3","exon_notFirst3","intron","TE","intergenic"))
-
-summary_all_med<-summarySE(meth_medium, measurevar = "Weighted_Meth", 
-                            groupvars = c("Feature","Sex"))
-a2 <- ggplot(summary_all_med, aes(x=Feature, y=Weighted_Meth, fill=Sex))+
-  geom_bar(position = position_dodge(), stat = "identity")+
-  geom_errorbar(aes(ymin=Weighted_Meth-ci, ymax=Weighted_Meth+ci),
-                width=.2,
-                position = position_dodge(.9))+
-  #geom_text(aes(label = summary_all$N, x = Feature), 
-  #         position = position_dodge(width = 0.9), vjust = -1)+ 
-  theme_bw()+
-  #xlab("Genomic Feature")+
-  #ylab("Mean Weighted Methylation Level per Feature")+
-  ggtitle("Medium Methylation")+
-  theme(axis.text.y=element_text(size=10),
-        axis.text.x=element_text(angle=45,hjust=1,size=10),
-        axis.title=element_blank(),
-        plot.title=element_text(size = 12),
-        legend.text = element_text(size=10),
-        legend.title = element_text(size=12))+
-  scale_fill_manual(breaks = c("female","male"),labels=c("Female","Male"),
-                    values=c("pink1","steelblue1"))+
-  scale_x_discrete(breaks = c("promotors_2000bp","exon_first3","exon_notFirst3","intron","TE","intergenic"),
-                   labels = c("Promtors","Exons 1-3","Exons 4+","Introns","TEs","Intergenic"),
-                   limits =c("promotors_2000bp","exon_first3","exon_notFirst3","intron","TE","intergenic"))
-
-summary_all_low<-summarySE(meth_low, measurevar = "Weighted_Meth", 
-                           groupvars = c("Feature","Sex"))
-a3 <- ggplot(summary_all_low, aes(x=Feature, y=Weighted_Meth, fill=Sex))+
-  geom_bar(position = position_dodge(), stat = "identity")+
-  geom_errorbar(aes(ymin=Weighted_Meth-ci, ymax=Weighted_Meth+ci),
-                width=.2,
-                position = position_dodge(.9))+
-  #geom_text(aes(label = summary_all$N, x = Feature), 
-  #         position = position_dodge(width = 0.9), vjust = -1)+ 
-  theme_bw()+
-  #xlab("Genomic Feature")+
-  #ylab("Mean Weighted Methylation Level per Feature")+
-  ggtitle("Low Methylation")+
-  theme(axis.text.y=element_text(size=10),
-        axis.text.x=element_text(angle=45,hjust=1,size=10),
-        axis.title=element_blank(),
-        plot.title=element_text(size = 12),
-        legend.text = element_text(size=10),
-        legend.title = element_text(size=12))+
-  scale_fill_manual(breaks = c("female","male"),labels=c("Female","Male"),
-                    values=c("pink1","steelblue1"))+
-  scale_x_discrete(breaks = c("promotors_2000bp","exon_first3","exon_notFirst3","intron","TE","intergenic"),
-                   labels = c("Promtors","Exons 1-3","Exons 4+","Introns","TEs","Intergenic"),
-                   limits =c("promotors_2000bp","exon_first3","exon_notFirst3","intron","TE","intergenic"))
 
 ## -------------------------------------------------------------------------
 # Frequency of features being high/low methylated
-head(melted_meth_stuff)
-meth_low <- melted_meth_stuff[melted_meth_stuff$Weighted_Meth < 0.3,]
-meth_medium <- melted_meth_stuff[melted_meth_stuff$Weighted_Meth > 0.3 &
-                                   melted_meth_stuff$Weighted_Meth < 0.7,]
-meth_high <- melted_meth_stuff[melted_meth_stuff$Weighted_Meth > 0.7,]
-meth_none <- melted_meth_stuff[melted_meth_stuff$Weighted_Meth ==0,]
+head(melted_annot)
+meth_low <- melted_annot[melted_annot$Weighted_Methylation < 0.3,]
+meth_medium <- melted_annot[melted_annot$Weighted_Methylation > 0.3 &
+                              melted_annot$Weighted_Methylation < 0.7,]
+meth_high <- melted_annot[melted_annot$Weighted_Methylation > 0.7,]
+meth_none <- melted_annot[melted_annot$Weighted_Methylation ==0,]
 
-melted_meth_stuff$bins<-"low"
-melted_meth_stuff$bins[melted_meth_stuff$Weighted_Meth > 0.3 &
-                    melted_meth_stuff$Weighted_Meth < 0.7] <-"medium"
-melted_meth_stuff$bins[melted_meth_stuff$Weighted_Meth > 0.7] <-"high"
-melted_meth_stuff$bins[melted_meth_stuff$Weighted_Meth ==0] <-"none"
+melted_annot$bins<-"low"
+melted_annot$bins[melted_annot$Weighted_Methylation > 0.3 &
+                    melted_annot$Weighted_Methylation < 0.7] <-"medium"
+melted_annot$bins[melted_annot$Weighted_Methylation > 0.7] <-"high"
+melted_annot$bins[melted_annot$Weighted_Methylation ==0] <-"none"
 
-melted_meth_stuff$combined <- paste0(melted_meth_stuff$Feature, "_", melted_meth_stuff$Sex)
-melted_meth_stuff_2 <- melted_meth_stuff[,-c(3,5)]
+melted_annot$combined <- paste0(melted_annot$Feature, "_", melted_annot$Sex)
+melted_meth_stuff_2 <- melted_annot[,-c(3,5)]
 melted_meth_stuff_2$counts <- with(melted_meth_stuff_2, 
                                   ave(bins, Feature, Sex, bins, FUN=length))
 plot_data <- melted_meth_stuff_2[!duplicated(melted_meth_stuff_2),]
@@ -240,10 +162,10 @@ b1<- ggplot(plot_data_prom, aes(x=Feature, fill=Sex, y=counts))+
         legend.title = element_text(size=12))+
   scale_y_continuous(labels = comma)+
   scale_fill_manual(breaks = c("female","male"),labels=c("Female","Male"),
-                    values=c("pink1","steelblue1"))+
-  scale_x_discrete(breaks = c("promotors_2000bp","exon_first3","exon_notFirst3","intron","TE","intergenic"),
-                   labels = c("Promtors","Exons 1-3","Exons 4+","Introns","TEs","Intergenic"),
-                   limits =c("promotors_2000bp","exon_first3","exon_notFirst3","intron","TE","intergenic"))
+                    values=c("#DDCC77","#44AA99"))+
+  scale_x_discrete(breaks = c("promoter","five_prime_UTR","three_prime_UTR","gene","exon","intron","TE","intergenic"),
+                   labels = c("Promoter","5' UTR","3' UTR","Gene","Exon","Intron","TE","Intergenic"),
+                   limits =c("promoter","five_prime_UTR","three_prime_UTR","gene","exon","intron","TE","intergenic"))
 
 plot_data_prom <- subset(plot_data, bins =="medium")
 plot_data_prom$counts <- as.numeric(plot_data_prom$counts)
@@ -262,10 +184,10 @@ b2<- ggplot(plot_data_prom, aes(x=Feature, fill=Sex, y=counts))+
         legend.title = element_text(size=12))+
   scale_y_continuous(labels = comma)+
   scale_fill_manual(breaks = c("female","male"),labels=c("Female","Male"),
-                    values=c("pink1","steelblue1"))+
-  scale_x_discrete(breaks = c("promotors_2000bp","exon_first3","exon_notFirst3","intron","TE","intergenic"),
-                   labels = c("Promtors","Exons 1-3","Exons 4+","Introns","TEs","Intergenic"),
-                   limits =c("promotors_2000bp","exon_first3","exon_notFirst3","intron","TE","intergenic"))
+                    values=c("#DDCC77","#44AA99"))+
+  scale_x_discrete(breaks = c("promoter","five_prime_UTR","three_prime_UTR","gene","exon","intron","TE","intergenic"),
+                   labels = c("Promoter","5' UTR","3' UTR","Gene","Exon","Intron","TE","Intergenic"),
+                   limits =c("promoter","five_prime_UTR","three_prime_UTR","gene","exon","intron","TE","intergenic"))
 
 plot_data_prom <- subset(plot_data, bins =="high")
 plot_data_prom$counts <- as.numeric(plot_data_prom$counts)
@@ -285,10 +207,10 @@ b3<- ggplot(plot_data_prom, aes(x=Feature, fill=Sex, y=counts))+
         legend.title = element_text(size=12))+
   scale_y_continuous(labels = comma)+
   scale_fill_manual(breaks = c("female","male"),labels=c("Female","Male"),
-                    values=c("pink1","steelblue1"))+
-  scale_x_discrete(breaks = c("promotors_2000bp","exon_first3","exon_notFirst3","intron","TE","intergenic"),
-                   labels = c("Promtors","Exons 1-3","Exons 4+","Introns","TEs","Intergenic"),
-                   limits =c("promotors_2000bp","exon_first3","exon_notFirst3","intron","TE","intergenic"))
+                    values=c("#DDCC77","#44AA99"))+
+  scale_x_discrete(breaks = c("promoter","five_prime_UTR","three_prime_UTR","gene","exon","intron","TE","intergenic"),
+                   labels = c("Promoter","5' UTR","3' UTR","Gene","Exon","Intron","TE","Intergenic"),
+                   limits =c("promoter","five_prime_UTR","three_prime_UTR","gene","exon","intron","TE","intergenic"))
 
 ggplot(plot_data_prom, aes(x=Feature, fill=Sex, y=counts))+
   geom_bar(position = position_dodge(), stat = "identity")+
@@ -305,24 +227,10 @@ ggplot(plot_data_prom, aes(x=Feature, fill=Sex, y=counts))+
         legend.title = element_blank())+
   scale_y_continuous(labels = comma)+
   scale_fill_manual(breaks = c("female","male"),labels=c("Female","Male"),
-                    values=c("pink1","steelblue1"))+
-  scale_x_discrete(breaks = c("promotors_2000bp","exon_first3","exon_notFirst3","intron","TE","intergenic"),
-                   labels = c("Promtors","Exons 1-3","Exons 4+","Introns","TEs","Intergenic"),
-                   limits =c("promotors_2000bp","exon_first3","exon_notFirst3","intron","TE","intergenic"))
-
-
-## -------------------------------------------------------------------------
-# Make one nice figure (or two?)
-library(ggpubr)
-levels_across_feature <- ggarrange(a1, a2, a3,
-                        ncol=3, nrow=1, common.legend = TRUE, legend="right")
-
-annotate_figure(levels_across_feature, 
-                left = text_grob("Mean Weighted Methylation Level per Feature", 
-                                 color = "black", rot = 90, size=14),
-                bottom = text_grob("Genomic Feature", 
-                                   color = "black", size =12,
-                                   hjust = 0.75 ))
+                    values=c("#DDCC77","#44AA99"))+
+  scale_x_discrete(breaks = c("promoter","five_prime_UTR","three_prime_UTR","gene","exon","intron","TE","intergenic"),
+                   labels = c("Promoter","5' UTR","3' UTR","Gene","Exon","Intron","TE","Intergenic"),
+                   limits =c("promoter","five_prime_UTR","three_prime_UTR","gene","exon","intron","TE","intergenic"))
 
 ## -------------------------------------------------------------------------
 plot_data_prom <- subset(plot_data, bins =="none")
@@ -342,10 +250,10 @@ b4 <- ggplot(plot_data_prom, aes(x=Feature, fill=Sex, y=counts))+
         legend.title = element_text(size=12))+
   scale_y_continuous(labels = comma)+
   scale_fill_manual(breaks = c("female","male"),labels=c("Female","Male"),
-                    values=c("pink1","steelblue1"))+
-  scale_x_discrete(breaks = c("promotors_2000bp","exon_first3","exon_notFirst3","intron","TE","intergenic"),
-                   labels = c("Promtors","Exons 1-3","Exons 4+","Introns","TEs","Intergenic"),
-                   limits =c("promotors_2000bp","exon_first3","exon_notFirst3","intron","TE","intergenic"))
+                    values=c("#DDCC77","#44AA99"))+
+  scale_x_discrete(breaks = c("promoter","five_prime_UTR","three_prime_UTR","gene","exon","intron","TE","intergenic"),
+                   labels = c("Promoter","5' UTR","3' UTR","Gene","Exon","Intron","TE","Intergenic"),
+                   limits =c("promoter","five_prime_UTR","three_prime_UTR","gene","exon","intron","TE","intergenic"))
 
 plot_data_prom <- subset(plot_data, bins =="high")
 plot_data_prom$counts <- as.numeric(plot_data_prom$counts)
@@ -364,10 +272,10 @@ b3_1<- ggplot(plot_data_prom, aes(x=Feature, fill=Sex, y=counts))+
         legend.title = element_text(size=12))+
   scale_y_continuous(labels = comma)+
   scale_fill_manual(breaks = c("female","male"),labels=c("Female","Male"),
-                    values=c("pink1","steelblue1"))+
-  scale_x_discrete(breaks = c("promotors_2000bp","exon_first3","exon_notFirst3","intron","TE","intergenic"),
-                   labels = c("Promtors","Exons 1-3","Exons 4+","Introns","TEs","Intergenic"),
-                   limits =c("promotors_2000bp","exon_first3","exon_notFirst3","intron","TE","intergenic"))
+                    values=c("#DDCC77","#44AA99"))+
+  scale_x_discrete(breaks = c("promoter","five_prime_UTR","three_prime_UTR","gene","exon","intron","TE","intergenic"),
+                   labels = c("Promoter","5' UTR","3' UTR","Gene","Exon","Intron","TE","Intergenic"),
+                   limits =c("promoter","five_prime_UTR","three_prime_UTR","gene","exon","intron","TE","intergenic"))
 
 
 ## -------------------------------------------------------------------------
@@ -381,3 +289,97 @@ annotate_figure(levels_across_feature,
                 bottom = text_grob("Genomic Feature", 
                                    color = "black", size =12,
                                    hjust = 0.75 ))
+
+
+## -------------------------------------------------------------------------
+# Take a look at different TE cetegories
+head(melted_annot)
+
+tes <- melted_annot[melted_annot$Feature=="TE",]
+head(tes)
+unique(tes$ID)
+
+summary_all<-summarySE(tes, measurevar = "Weighted_Methylation", 
+                       groupvars = c("ID","Sex"))
+
+ggplot(summary_all, aes(x=ID, y=Weighted_Methylation, fill=Sex))+
+  geom_bar(position = position_dodge(), stat = "identity")+
+  geom_errorbar(aes(ymin=Weighted_Methylation-ci, ymax=Weighted_Methylation+ci),
+                width=.2,
+                position = position_dodge(.9))+
+  theme_bw()+
+  xlab("Transposable Element Type")+
+  ylab("Weighted Methylation Level")+
+  theme(axis.text.y=element_text(size=18),
+        axis.text.x=element_text(angle=45,hjust=1,size=18),
+        axis.title.y=element_text(size=20),
+        axis.title.x = element_text(size=20),
+        plot.title=element_text(size = 20),
+        legend.text = element_text(size=20),
+        legend.title = element_blank())+
+  scale_fill_manual(breaks = c("female","male"),labels=c("Female","Male"),
+                    values=c("#DDCC77","#44AA99"))
+
+# Let's also just count up the TE content generally
+annotation_rawdata <- read_delim("~/Dropbox/Edinburgh/Projects/Asian_psyllid/Genome_Files/Dcitr_OGSv3.0_beta_longestIsoform_plusIntrons_plusPromoters_plusTEs_plusIntergenic.txt", 
+                                                                                             "\t", escape_double = FALSE, trim_ws = TRUE)
+tes <- annotation_rawdata[annotation_rawdata$feature == "TE",]
+head(tes)
+tes$chr_cat <- "A"
+tes$chr_cat[tes$chr=="DC3.0sc08"] <- "X"
+
+ggplot(tes, aes(x=gene_id, fill=chr_cat))+
+  geom_bar(position = position_dodge2(preserve = "single", padding = 0), stat = "count")+
+  theme_bw()+
+  xlab("Transposable Element Type")+
+  ylab("Count")+
+  theme(axis.text.y=element_text(size=18),
+        axis.text.x=element_text(angle=45,hjust=1,size=18),
+        axis.title.y=element_text(size=20),
+        axis.title.x = element_text(size=20),
+        plot.title=element_text(size = 20),
+        legend.text = element_text(size=20),
+        legend.title = element_blank())
+
+tes$size <- tes$end - tes$start
+head(tes)
+
+# Need total genome size - X chromosome size here
+genome_fai <- read_delim("~/Dropbox/Edinburgh/Projects/Asian_psyllid/Genome_Files/Diaci_v3.0.ref_nospaces.fa.fai", 
+                                         "\t", escape_double = FALSE, col_names = FALSE, 
+                                         trim_ws = TRUE)
+genome_fai <- genome_fai[,c(1,2)]
+# 08 = 28791834
+genome_fai <- genome_fai[!genome_fai$X1 =="DC3.0sc08",]
+sum(genome_fai$X2) # 445174712
+
+tes$chr_size <- 445174712
+tes$chr_size[tes$chr=="DC3.0sc08"] <- 28791834
+head(tes)
+
+tes <- tes[,-c(1,2,3,4)]
+te_summary <- summaryBy(size ~ chr_cat + gene_id + chr_size,
+                        data = tes, FUN=sum)
+head(te_summary)
+te_summary$percent <- 100*(te_summary$size.sum / te_summary$chr_size)
+
+ggplot(te_summary, aes(x=gene_id, fill=chr_cat, y = percent))+
+  geom_bar(position = position_dodge2(preserve = "single", padding = 0), stat = "identity")+
+  theme_bw()+
+  xlab("Transposable Element Type")+
+  ylab("Percentage of Chromosome Occupied")+
+  theme(axis.text.y=element_text(size=18),
+        axis.text.x=element_text(angle=45,hjust=1,size=18),
+        axis.title.y=element_text(size=20),
+        axis.title.x = element_text(size=20),
+        plot.title=element_text(size = 20),
+        legend.text = element_text(size=20),
+        legend.title = element_blank())
+
+# Also quick look at the total percentage of the genome occupied by TEs
+445174712 + 28791834 # 473966546
+head(te_summary)
+
+sum(te_summary$size.sum) # 15658460
+100*(15658460/473966546) # 3.3%
+

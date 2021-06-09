@@ -100,6 +100,16 @@ all_data$category[all_data$diff_exp =="yes" & all_data$female_fpkm_mean==0] <- "
 all_data$category[all_data$diff_exp =="yes" & all_data$male_fpkm_mean==0] <- "female_limited"
 
 table(all_data$category)
+
+# Goodness of fit
+observed = c(1164, 95)    # observed frequencies 
+expected = c(0.5, 0.5)    # expected proportions
+
+chisq.test(x = observed,
+           p = expected) 
+
+
+
 write.table(all_data, file="all_gene_expression_data.txt", sep="\t", quote=F, col.names = T, row.names = F )
 #------------------------------------------------------------------
 # Plots
@@ -167,12 +177,12 @@ x_chorm <- x_chorm[,c(1,18)]
 
 autosomes_percent <- autosomes %>% 
   group_by(category) %>% 
-  summarise(count = n()) %>% 
+  dplyr::summarise(count = n()) %>% 
   mutate(perc = 100*(count/sum(count)))
 
 x_chorm_percent <- x_chorm %>% 
   group_by(category) %>% 
-  summarise(count = n()) %>% 
+  dplyr::summarise(count = n()) %>% 
   mutate(perc = 100*(count/sum(count)))
 
 ggplot(autosomes_percent, aes(x=category, y=perc, fill=category))+
@@ -216,6 +226,29 @@ ggplot(x_chorm_percent, aes(x=category, y=perc, fill=category))+
         legend.position = "none",
         title = element_text(size=22))
 
+x_chorm_percent
+autosomes_percent
 
+# Take the percentage sum of female_biased and female_limited (or for male)
+# are compare between X and A with an expected split of 50/50
 
+# Female X = 0.945
+# Female A = 0.7532
+
+# Goodness of fit
+observed = c(0.945, 0.7532)    # observed frequencies 
+expected = c(0.5, 0.5)    # expected proportions
+
+chisq.test(x = observed,
+           p = expected) # X-squared = 0.021662, df = 1, p-value = 0.883
+
+# Male X = 0.27
+# Male A = 9.9525
+
+# Goodness of fit
+observed = c(0.27, 9.9525)    # observed frequencies 
+expected = c(0.5, 0.5)    # expected proportions
+
+chisq.test(x = observed,
+           p = expected) # X-squared = 9.171, df = 1, p-value = 0.002459
 

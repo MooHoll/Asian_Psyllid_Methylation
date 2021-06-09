@@ -1,5 +1,5 @@
 ## -------------------------------------------------------------------------
-## Making Fancy Genome-Methyation Differences Graphs
+## Making Fancy Genome-Methylation Differences Graphs
 ## -------------------------------------------------------------------------
 
 # Load packages etc.
@@ -94,7 +94,7 @@ ggplot(segment(data1)) +
   xlab("")+
   theme(axis.text = element_blank(),
         legend.position = "none")+
-  scale_colour_manual(values=c("#44AA99","#6699CC"))
+  scale_colour_manual(values=c("#DDCC77","#44AA99"))
 
 ## -------------------------------------------------------------------------
 # Make a nice PCA
@@ -110,18 +110,18 @@ percentage <- round(PCA_data$sdev / sum(PCA_data$sdev) * 100, 0)
 percentage <- paste(colnames(PCA_data), "(", paste( as.character(percentage), "%", ")", sep="") )
 
 
-ggplot(PCA_data1, aes(PC5, PC6, colour=Sex))+
+ggplot(PCA_data1, aes(PC1, PC2, colour=Sex))+
   geom_point(size=14)+
   geom_text_repel(aes(label=sample), size=12,show.legend=FALSE, 
                   point.padding = 2, box.padding = 1)+
   theme_bw()+
-  xlab(paste0("PC5:",percentage[5],"variance")) +
-  ylab(paste0("PC6:",percentage[6],"variance")) +
+  xlab(paste0("PC1:",percentage[1],"variance")) +
+  ylab(paste0("PC2:",percentage[2],"variance")) +
   theme(axis.text=element_text(size=26),
         axis.title=element_text(size=30),
         legend.text=element_text(size=30),
         legend.title=element_blank())+
-  scale_colour_manual(values=c("#44AA99","#6699CC"))
+  scale_colour_manual(values=c("#DDCC77","#44AA99"))
 
 # Include a coefficent of variation to measure the dispersion across individual CpGs in males and females
 # Function from: https://rcompanion.org/rcompanion/c_02.html
@@ -157,7 +157,7 @@ summary.list(objectmethbase1$male_3) # 110.5406
 
 ## -------------------------------------------------------------------------
 # Make a plot to show the methylation level overall for males and females
-# Levels taken from the mean above
+# Levels taken from the bismark calculation minus the lambda conversion efficienct
 # NOTE: it's so similar the graph tells us nothing
 library(reshape2)
 
@@ -174,11 +174,12 @@ ggplot(levels2, aes(y=Methylation, x=Sex,fill=Sex))+
   theme_bw()+
   xlab("Sex") +
   ylab("CpG Methylation Level") +
+  ylim(0.29,0.32)+
   theme(axis.text=element_text(size=26),
         axis.title=element_text(size=30),
         legend.text=element_text(size=30),
         legend.position = "none")+
-  scale_fill_manual(values=c("pink1", "steelblue1"))
+  scale_fill_manual(values=c("#DDCC77","#44AA99"))
 head(levels2)
 
 

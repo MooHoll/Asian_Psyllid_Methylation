@@ -32,10 +32,7 @@ For up to date progress see [here](./Differential_expression/Differential_expres
 
 ### To-do list: 
 - Genome-wide DNA methylation differences between males and females
-    - Overall levels including non-CpG (boxplots)
     - Chromosome level differences (including sex chromosomes) (I like Mather's et al. density plot better than our current one)
-    - Mean feature levels (e.g. promotors/exons etc.)
-    - Counts in high/medium/low/no bins per feature
     - Exon/intron average levels per gene, **NEED TO DO THIS BEFORE CAN MOVE ON SO CAN FIGURE OUT IF NEED TO SPLIT EXONS INTO BINS, E.G. EXONS 1-3 ... this is proving tricky ...)**
 - Differential DNA methylation on the CpG and feature level
     - Location of differentially methylated CpGs and count (could also include a manhatten plot)
