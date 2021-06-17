@@ -321,6 +321,19 @@ both <- Reduce(intersect, list(female_hyper_intron_genes,male_hyper_intron_genes
 length(both)
 common_intron <- weighted_meth_introns[weighted_meth_introns$gene_id %in% both,] 
 
+# Write out a dataframe for later labelling in expression correlation scrips
+head(weighted_meth_exons)
+head(weighted_meth_introns)
+
+exons <- weighted_meth_exons[,c(1,2,3,10)]
+introns <- weighted_meth_introns[,c(1,2,3,10)]
+
+all <- rbind(exons, introns)
+all$hypermeth_cat <- paste(all$feature, all$hypermethylated, sep="_")
+all <- all[,-c(2,4)]
+
+write.table(all, file="hypermethylated_genes_with_category.txt",
+            sep="\t",quote = F, row.names = F, col.names = T)
 
 # Where are the genes in terms of chromosome
 ggplot(exon_data, aes(x=chr, fill=hypermethylated))+
