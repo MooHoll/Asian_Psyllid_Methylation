@@ -50,6 +50,8 @@ meth_exp$logFPKM <- log(meth_exp$FPKM)
 meth_exp$logFPKM[meth_exp$logFPKM == -Inf] <- 0
 
 meth_exp$weighted_meth <- as.numeric(meth_exp$weighted_meth)
+#write.table(meth_exp, file="all_methylation_expression_data.txt",
+ #           col.names = T, row.names = F, quote = F, sep = "\t")
 
 ggplot(meth_exp, aes(x=weighted_meth, y=logFPKM, colour = sex))+
   geom_point()+
