@@ -35,9 +35,9 @@ methylation$sex <- gsub("_all","", methylation$sex)
 # Read in gene expression data
 exp_data <- read_delim("~/Dropbox/Edinburgh/Projects/Asian_psyllid/Gene_Expression/Differential_expression/all_gene_expression_data.txt", 
                                        "\t", escape_double = FALSE, trim_ws = TRUE)
-exp_data <- exp_data[,-c(2:7,10:15)]
-exp_data <- reshape2::melt(exp_data, id.vars=c("gene_id","diff_exp","category"))
-colnames(exp_data) <- c("gene_id","diff_exp","category","sex","FPKM")
+exp_data <- exp_data[,-c(2:7,11:15)]
+exp_data <- reshape2::melt(exp_data, id.vars=c("gene_id","diff_exp","category", "log2FoldChange"))
+colnames(exp_data) <- c("gene_id","diff_exp","category","logFC","sex","FPKM")
 exp_data$sex <- gsub("_fpkm_mean","", exp_data$sex)
 
 # ----------------------------------------------
@@ -176,7 +176,7 @@ condifence_intervals <- function(x) {
 meth_exp$plot_cat <- paste(meth_exp$meth_level, meth_exp$sex, sep="_")
 ggplot(meth_exp, aes(x=plot_cat, y=logFPKM))+
   geom_violin(aes(fill=sex))+
-  xlab("Differential Methylation Category")+
+  xlab("Methylation Category")+
   ylab("log(FPKM)")+
   stat_summary(fun.data=condifence_intervals, color="red",size=1)+
   scale_fill_manual(breaks = c("female","male"),labels=c("Female","Male"),
@@ -333,11 +333,11 @@ head(meth_exp_A)
 head(meth_exp_X)
 
 meth_exp_X$plot_cat <- paste(meth_exp_X$meth_level, meth_exp_X$sex, sep="_")
-ggplot(meth_exp_X, aes(x=plot_cat, y=logFPKM))+
+ggplot(meth_exp_A, aes(x=plot_cat, y=logFPKM))+
   geom_violin(aes(fill=sex))+
-  xlab("Differential Methylation Category")+
+  xlab("Methylation Category")+
   ylab("log(FPKM)")+
-  ggtitle("X Chromosome")+
+  ggtitle("Autosomes")+
   stat_summary(fun.data=condifence_intervals, color="red",size=1)+
   scale_fill_manual(breaks = c("female","male"),labels=c("Female","Male"),
                     values=c("#DDCC77","#44AA99"))+
@@ -362,45 +362,3 @@ model1<-lm(FPKM ~ sex * meth_level, data=meth_exp_X)
 model2<-lm(FPKM ~ sex + meth_level, data=meth_exp_X)
 anova(model1,model2) # No sig interaction
 summary.lm(model2) Nope
-
-
-
-
-
-# MOVE THIS TO OTHER SCRIPT
-
-# And also for genes which are differential meth as well
-meth_exp$plot_cat <- paste(meth_exp$hypermeth_cat, meth_exp$sex, sep="_")
-ggplot(meth_exp, aes(x=plot_cat, y=logFPKM))+
-  geom_violin(aes(fill=sex))+
-  xlab("Differential Methylation Category")+
-  ylab("log(FPKM)")+
-  stat_summary(fun.data=condifence_intervals, color="red",size=1)+
-  scale_fill_manual(breaks = c("female","male"),labels=c("Female","Male"),
-                    values=c("#DDCC77","#44AA99"))+
-  scale_x_discrete(limits=c("none_female","none_male","exon_female_female","exon_female_male",
-                            "exon_male_female","exon_male_male","intron_female_female","intron_female_male",
-                            "intron_male_female","intron_male_male"),
-                   labels=c("None", "","Female Hypermethylated Exon","", "Male Hypermethylated Exon","",
-                            "Female Hypermethylated Intron","", "Male Hypermethylated Intron",""))+
-  theme_bw()+
-  theme(axis.text.y=element_text(size=18),
-        axis.text.x=element_text(angle=45,hjust=1,size=18),
-        axis.title.y=element_text(size=20),
-        axis.title.x = element_text(size=20),
-        plot.title=element_text(size = 20),
-        legend.text = element_text(size=20),
-        legend.title = element_blank())
-
-
-# Stats
-meth_exp$sex <- as.factor(meth_exp$sex)
-meth_exp$hypermeth_cat <- as.factor(meth_exp$hypermeth_cat)
-
-model1<-lm(FPKM ~ sex * hypermeth_cat, data=meth_exp)
-model2<-lm(FPKM ~ sex + hypermeth_cat, data=meth_exp)
-anova(model1,model2) # No sig interaction
-summary.lm(model2) # None
-#meth_exp$SHD<-interaction(meth_exp$sex,meth_exp$hypermeth_cat)
-#model1_new<-lm(FPKM~-1+SHD, data=meth_exp)
-#summary(glht(model1_new,linfct=mcp(SHD="Tukey"))) # None

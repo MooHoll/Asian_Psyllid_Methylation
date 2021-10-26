@@ -11,7 +11,7 @@ cd $SCRATCH
 
 start=`date +%s`
 #---------------------------------------------
-
+# blah blah edit
 #RNA-Seq female
 wget "http://novo-intelligent-tj.oss-cn-beijing.aliyuncs.com/css_home/CP2020082000115/H101SC20101161/RSCS3300/X101SC20101161-Z01/X101SC20101161-Z01-J002/2.cleandata/F2-1_FRAS202200995-1r/F2-1_FRAS202200995-1r_1.clean.fq.gz?OSSAccessKeyId=LTAIBg5ZREoSx2z9&Expires=1607503367&Signature=B2ttIV4RGoqrCuYxOjbOmgn9%2BUo%3D"
 wget "http://novo-intelligent-tj.oss-cn-beijing.aliyuncs.com/css_home/CP2020082000115/H101SC20101161/RSCS3300/X101SC20101161-Z01/X101SC20101161-Z01-J002/2.cleandata/F2-1_FRAS202200995-1r/F2-1_FRAS202200995-1r_2.clean.fq.gz?OSSAccessKeyId=LTAIBg5ZREoSx2z9&Expires=1607503553&Signature=m8ZKAWl4ckeEETUJURqeAT8ibfY%3D"

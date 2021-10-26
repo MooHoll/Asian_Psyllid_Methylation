@@ -178,35 +178,35 @@ ggplot(output_count, aes(x=feature, y=cpg_position.length))+
 
 # Here we are saying a min of 2 diff meth cpgs per feature to count
 intron_data <- output[output$feature=="intron",]
-number_diff_cpgs_per_intron <- count(intron_data, gene_id)
+number_diff_cpgs_per_intron <- dplyr::count(intron_data, gene_id)
 mean(number_diff_cpgs_per_intron$n) #1-7, mean = 1.349, median = 1
 hist(number_diff_cpgs_per_intron$n)
 nrow(number_diff_cpgs_per_intron[number_diff_cpgs_per_intron$n > 2,]) #27
 introns_with_2_cpgs <- subset(number_diff_cpgs_per_intron, n >2)
 
 exon_data <- output[output$feature=="exon",]
-number_diff_cpgs_per_exon <- count(exon_data, gene_id)
+number_diff_cpgs_per_exon <- dplyr::count(exon_data, gene_id)
 median(number_diff_cpgs_per_exon$n) #1-7, mean = 1.256, median = 1
 hist(number_diff_cpgs_per_exon$n)
 nrow(number_diff_cpgs_per_exon[number_diff_cpgs_per_exon$n > 2,]) #14
 exons_with_2_cpgs <- subset(number_diff_cpgs_per_exon, n >2)
 
 UTR3_data <- output[output$feature=="three_prime_UTR",]
-number_diff_cpgs_per_UTR3 <- count(UTR3_data, gene_id)
+number_diff_cpgs_per_UTR3 <- dplyr::count(UTR3_data, gene_id)
 range(number_diff_cpgs_per_UTR3$n) #1-6, mean = 1.5, median = 1
 hist(number_diff_cpgs_per_UTR3$n)
 nrow(number_diff_cpgs_per_UTR3[number_diff_cpgs_per_UTR3$n > 2,]) #3 
 UTR3_with_2_cpgs <- subset(number_diff_cpgs_per_UTR3, n >2)
 
 UTR5_data <- output[output$feature=="five_prime_UTR",]
-number_diff_cpgs_per_UTR5 <- count(UTR5_data, gene_id)
+number_diff_cpgs_per_UTR5 <- dplyr::count(UTR5_data, gene_id)
 median(number_diff_cpgs_per_UTR5$n) #1-2, mean = 1.13, median = 1
 hist(number_diff_cpgs_per_UTR5$n)
 nrow(number_diff_cpgs_per_UTR5[number_diff_cpgs_per_UTR5$n > 2,]) #0 
 UTR5_with_2_cpgs <- subset(number_diff_cpgs_per_UTR5, n >2)
 
 promoter_data <- output[output$feature=="promoter",]
-number_diff_cpgs_per_prom <- count(promoter_data, gene_id)
+number_diff_cpgs_per_prom <- dplyr::count(promoter_data, gene_id)
 range(number_diff_cpgs_per_prom$n) #1-2, mean = 1.21, median = 1
 hist(number_diff_cpgs_per_prom$n)
 nrow(number_diff_cpgs_per_prom[number_diff_cpgs_per_prom$n > 2,]) #0 
@@ -237,7 +237,7 @@ TEs_subset <- TEs[TEs$cpg_position %in% cpgs_unique_to_TEs,]
 
 # Filter by 3cpgs per TE
 unique_TEs_only <- unique(TEs_subset$uniquie_identified)
-number_diff_cpgs_per_TE<- count(TEs_subset,uniquie_identified )
+number_diff_cpgs_per_TE<- dplyr::count(TEs_subset,uniquie_identified )
 TEs_with_2_cpgs <- subset(number_diff_cpgs_per_TE, n >2) #1
 
 # conclusion: nothing here to pursue
@@ -267,18 +267,17 @@ weighted_meth <- weighted_meth[!is.na(weighted_meth$chr),]
 weighted_meth <- weighted_meth[!is.na(weighted_meth$male),]
 weighted_meth <- weighted_meth[!is.na(weighted_meth$female),]
 
-# Add column for weighted methylation difference between males and females as a %
-weighted_meth$percent_meth_difference_of_feature <- ((weighted_meth$male -
-                                                        weighted_meth$female) / weighted_meth$male)*100
+# Add column for weighted methylation difference between males and females (it's already basically a percentage remember)
+weighted_meth$percent_meth_difference_of_feature <- weighted_meth$male - weighted_meth$female
 
 # Keep genes that have at least two diff CpGs in exons or introns and 15%
 # feature level difference overall
 weighted_meth_exons <- weighted_meth[(weighted_meth$gene_id %in% exon_data$gene_id &
-                                       weighted_meth$feature == "exon"),] #34 exons
+                                       weighted_meth$feature == "exon"),] 
 length(unique(weighted_meth_exons$gene_id)) # 13 genes
-weighted_meth_exons <- weighted_meth_exons[(weighted_meth_exons$percent_meth_difference_of_feature > 15 |
-                                             weighted_meth_exons$percent_meth_difference_of_feature < -15),] # 21
-length(unique(weighted_meth_exons$gene_id)) # 11 genes
+weighted_meth_exons <- weighted_meth_exons[(weighted_meth_exons$percent_meth_difference_of_feature > 0.15 |
+                                             weighted_meth_exons$percent_meth_difference_of_feature < -0.15),] # 21
+length(unique(weighted_meth_exons$gene_id)) # 4 genes
 
 
 weighted_meth_introns <- weighted_meth[(weighted_meth$gene_id %in% intron_data$gene_id &
@@ -286,16 +285,7 @@ weighted_meth_introns <- weighted_meth[(weighted_meth$gene_id %in% intron_data$g
 length(unique(weighted_meth_introns$gene_id)) # 23 genes
 weighted_meth_introns <- weighted_meth_introns[(weighted_meth_introns$percent_meth_difference_of_feature > 15 |
                                                   weighted_meth_introns$percent_meth_difference_of_feature < -15),] # 31
-length(unique(weighted_meth_introns$gene_id)) # 22 genes
-
-# How many genes in common?
-exon_gene_ids <- as.data.frame(unique(weighted_meth_exons$gene_id))
-colnames(exon_gene_ids) <- "gene_id"
-
-intron_gene_ids <- as.data.frame(unique(weighted_meth_introns$gene_id))
-colnames(intron_gene_ids) <- "gene_id"
-
-both <- Reduce(intersect, list(exon_gene_ids,intron_gene_ids)) # 1 - Dcitr02g05900.1
+length(unique(weighted_meth_introns$gene_id)) # 0 genes
 
 # Which sex are these genes hypermethylated in
 head(weighted_meth_exons)
@@ -309,30 +299,11 @@ length(male_hyper_exon_genes)
 both <- Reduce(intersect, list(female_hyper_exon_genes,male_hyper_exon_genes)) # 3
 common_exon <- weighted_meth_exons[weighted_meth_exons$gene_id %in% both,] # all have 3 diff exons, all two female hyper and one male hyper
 
-head(weighted_meth_introns)
-weighted_meth_introns$hypermethylated <- "male"
-weighted_meth_introns$hypermethylated[weighted_meth_introns$female > weighted_meth_introns$male] <- "female"
-
-female_hyper_intron_genes <- unique(weighted_meth_introns$gene_id[weighted_meth_introns$hypermethylated=="female"]) # 14
-length(female_hyper_intron_genes)
-male_hyper_intron_genes <-  unique(weighted_meth_introns$gene_id[weighted_meth_introns$hypermethylated=="male"]) # 10
-length(male_hyper_intron_genes)
-both <- Reduce(intersect, list(female_hyper_intron_genes,male_hyper_intron_genes)) # 2
-length(both)
-common_intron <- weighted_meth_introns[weighted_meth_introns$gene_id %in% both,] 
-
 # Write out a dataframe for later labelling in expression correlation scrips
 head(weighted_meth_exons)
-head(weighted_meth_introns)
-
 exons <- weighted_meth_exons[,c(1,2,3,10)]
-introns <- weighted_meth_introns[,c(1,2,3,10)]
 
-all <- rbind(exons, introns)
-all$hypermeth_cat <- paste(all$feature, all$hypermethylated, sep="_")
-all <- all[,-c(2,4)]
-
-write.table(all, file="hypermethylated_genes_with_category.txt",
+write.table(exons, file="hypermethylated_genes_with_category.txt",
             sep="\t",quote = F, row.names = F, col.names = T)
 
 # Where are the genes in terms of chromosome
@@ -352,23 +323,6 @@ ggplot(exon_data, aes(x=chr, fill=hypermethylated))+
   scale_fill_manual(breaks = c("female","male"),labels=c("Female","Male"),
                     values=c("#DDCC77","#44AA99"))
 
-ggplot(intron_data, aes(x=chr, fill=hypermethylated))+
-  geom_bar()+
-  guides()+
-  xlab("Chromosome")+
-  ylab("Number of Differentially Methylated Introns")+
-  theme_bw()+
-  theme(axis.text.y=element_text(size=18),
-        axis.text.x=element_text(angle=45,hjust=1,size=18),
-        axis.title.y=element_text(size=20),
-        axis.title.x = element_text(size=20),
-        plot.title=element_text(size = 20),
-        legend.text = element_text(size=20),
-        legend.title = element_blank())+
-  scale_fill_manual(breaks = c("female","male"),labels=c("Female","Male"),
-                    values=c("#DDCC77","#44AA99"))
-
-
 ## -------------------------------------------------------------------------
 # Write out all the gene lists for later use
 ## -------------------------------------------------------------------------
@@ -376,12 +330,6 @@ ggplot(intron_data, aes(x=chr, fill=hypermethylated))+
 head(weighted_meth_exons)
 write.table(as.data.frame(unique(weighted_meth_exons$gene_id)), file="diff_meth_exon_geneIDs.txt", 
             sep="\t", quote = F, col.names = F, row.names = F)
-
-head(weighted_meth_introns) 
-write.table(as.data.frame(unique(weighted_meth_introns$gene_id)), file="diff_meth_intron_geneIDs.txt", 
-            sep="\t", quote = F, col.names = F, row.names = F)
-
-
 
 # HERE XXXXXX
 

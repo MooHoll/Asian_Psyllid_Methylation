@@ -22,7 +22,7 @@ gunzip *cov.gz
 
 for file in $(ls *cov)
 do
-    base=$(basename ${file} ".clean_bismark_bt2.deduplicated.bismark.cov")
+    base=$(basename ${file} "_val_1_bismark_bt2_pe.deduplicated.bismark.cov.gz")
     cut -f1,2,5,6 ${file} > ${base}_coverage.txt
 done
 

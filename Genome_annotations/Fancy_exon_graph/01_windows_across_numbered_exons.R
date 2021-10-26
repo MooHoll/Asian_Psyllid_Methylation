@@ -50,6 +50,7 @@ write.table(final_annotation, file ="Dcitr_OGSv3.0_beta_numbered_exons.txt", sep
             quote = F, col.names = T, row.names = F)
 
 # ------------------------------------------------------
+# NOTE: I never fixed the code below so it doesn't make a graph if I remember correctly
 # Get all the data together for the plot
 genes <- final_annotation[final_annotation$feature=="gene",]
 
