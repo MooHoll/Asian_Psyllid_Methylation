@@ -63,3 +63,30 @@ ggplot(dnmt2, aes(x=Sex, y=value, fill=Sex))+
         axis.title=element_text(size=22),
         legend.position = "none",
         title = element_text(size=22))
+
+# Also take a look at the dsx and fru genes
+head(all_gene_expression_data)
+
+dsx <- all_gene_expression_data[all_gene_expression_data$gene_id=="Dcitr03g16970.1",]
+# Not present
+
+fru <- all_gene_expression_data[all_gene_expression_data$gene_id=="Dcitr01g04580.1",]
+# Unbiased
+
+fru <- fru[,c(1:7)]
+fru <- melt(fru)
+fru$Sex <- c("Female","Female","Female","Male","Male","Male")
+
+ggplot(fru, aes(x=Sex, y=value, fill=Sex))+
+  geom_boxplot()+
+  geom_jitter(size=5)+
+  theme_bw()+
+  xlab("Sex")+
+  ylab("Expression Level (FPKM)")+
+  ggtitle("Fruitless")+
+  scale_fill_manual(limits=c("Female", "Male"),
+                    values = c("#DDCC77","#44AA99"))+
+  theme(axis.text=element_text(size=20),
+        axis.title=element_text(size=22),
+        legend.position = "none",
+        title = element_text(size=22))
