@@ -18,15 +18,16 @@ weighted_meth <- read_delim("~/Dropbox/Edinburgh/Projects/Asian_psyllid/DNA_Meth
                            "\t", escape_double = FALSE, trim_ws = TRUE)
 diff_meth_genes <- read_delim("~/Dropbox/Edinburgh/Projects/Asian_psyllid/DNA_Methylation/Differential_methylation/hypermethylated_genes_with_category.txt", 
               "\t", escape_double = FALSE, trim_ws = TRUE)
+diff_meth_genes <- diff_meth_genes[,c(1,3,10)]
 
 methylation <- merge(weighted_meth, diff_meth_genes, by=c("chr","gene_id"), all=T)
-methylation$hypermeth_cat[is.na(methylation$hypermeth_cat)] <- "none"
+methylation$hypermethylated[is.na(methylation$hypermethylated)] <- "none"
 
 methylation$male_all <- paste(methylation$male, methylation$male_category, sep="_")
 methylation$female_all <- paste(methylation$female, methylation$female_category, sep="_")
 
 methylation <- methylation[,-c(3:6)]
-methylation <- reshape2::melt(methylation, id.vars=c("chr","gene_id","hypermeth_cat"))
+methylation <- reshape2::melt(methylation, id.vars=c("chr","gene_id","hypermethylated"))
 methylation <- methylation[!duplicated(methylation),]
 methylation <- separate(methylation, value, into = c("weighted_meth","meth_level"), sep="_")
 colnames(methylation)[4] <- "sex"
@@ -43,15 +44,15 @@ exp_data$sex <- gsub("_fpkm_mean","", exp_data$sex)
 # ----------------------------------------------
 # General meth vs general exp full scatter
 # -----------------------------------------------
-meth_exp <- merge(exp_data, methylation, by=c("gene_id","sex"), all=T) #35934 genes
-meth_exp <- meth_exp[!is.na(meth_exp$weighted_meth) & !is.na(meth_exp$FPKM),] #23974 genes
+meth_exp <- merge(exp_data, methylation, by=c("gene_id","sex"), all=T) #35924 genes
+meth_exp <- meth_exp[!is.na(meth_exp$weighted_meth) & !is.na(meth_exp$FPKM),] #23964 genes
 meth_exp$FPKM[meth_exp$FPKM==0] <- 1
 meth_exp$logFPKM <- log(meth_exp$FPKM)
 meth_exp$logFPKM[meth_exp$logFPKM == -Inf] <- 0
 
 meth_exp$weighted_meth <- as.numeric(meth_exp$weighted_meth)
 #write.table(meth_exp, file="all_methylation_expression_data.txt",
- #           col.names = T, row.names = F, quote = F, sep = "\t")
+ #          col.names = T, row.names = F, quote = F, sep = "\t")
 
 ggplot(meth_exp, aes(x=weighted_meth, y=logFPKM, colour = sex))+
   geom_point()+

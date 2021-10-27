@@ -176,41 +176,41 @@ ggplot(output_count, aes(x=feature, y=cpg_position.length))+
                    limits =c("intron","exon","three_prime_UTR","TE","promoter","five_prime_UTR"))
 
 
-# Here we are saying a min of 2 diff meth cpgs per feature to count
+# Here we are saying a min of 2 diff meth cpg per feature to count
 intron_data <- output[output$feature=="intron",]
 number_diff_cpgs_per_intron <- dplyr::count(intron_data, gene_id)
 mean(number_diff_cpgs_per_intron$n) #1-7, mean = 1.349, median = 1
 hist(number_diff_cpgs_per_intron$n)
-nrow(number_diff_cpgs_per_intron[number_diff_cpgs_per_intron$n > 2,]) #27
-introns_with_2_cpgs <- subset(number_diff_cpgs_per_intron, n >2)
+nrow(number_diff_cpgs_per_intron[number_diff_cpgs_per_intron$n >=2,]) #55
+introns_with_2_cpgs <- subset(number_diff_cpgs_per_intron, n >=2)
 
 exon_data <- output[output$feature=="exon",]
 number_diff_cpgs_per_exon <- dplyr::count(exon_data, gene_id)
 median(number_diff_cpgs_per_exon$n) #1-7, mean = 1.256, median = 1
 hist(number_diff_cpgs_per_exon$n)
-nrow(number_diff_cpgs_per_exon[number_diff_cpgs_per_exon$n > 2,]) #14
-exons_with_2_cpgs <- subset(number_diff_cpgs_per_exon, n >2)
+nrow(number_diff_cpgs_per_exon[number_diff_cpgs_per_exon$n >=2,]) #40
+exons_with_2_cpgs <- subset(number_diff_cpgs_per_exon, n >=2)
 
 UTR3_data <- output[output$feature=="three_prime_UTR",]
 number_diff_cpgs_per_UTR3 <- dplyr::count(UTR3_data, gene_id)
 range(number_diff_cpgs_per_UTR3$n) #1-6, mean = 1.5, median = 1
 hist(number_diff_cpgs_per_UTR3$n)
-nrow(number_diff_cpgs_per_UTR3[number_diff_cpgs_per_UTR3$n > 2,]) #3 
-UTR3_with_2_cpgs <- subset(number_diff_cpgs_per_UTR3, n >2)
+nrow(number_diff_cpgs_per_UTR3[number_diff_cpgs_per_UTR3$n >=2,]) #7
+UTR3_with_2_cpgs <- subset(number_diff_cpgs_per_UTR3, n >=2)
 
 UTR5_data <- output[output$feature=="five_prime_UTR",]
 number_diff_cpgs_per_UTR5 <- dplyr::count(UTR5_data, gene_id)
 median(number_diff_cpgs_per_UTR5$n) #1-2, mean = 1.13, median = 1
 hist(number_diff_cpgs_per_UTR5$n)
-nrow(number_diff_cpgs_per_UTR5[number_diff_cpgs_per_UTR5$n > 2,]) #0 
-UTR5_with_2_cpgs <- subset(number_diff_cpgs_per_UTR5, n >2)
+nrow(number_diff_cpgs_per_UTR5[number_diff_cpgs_per_UTR5$n >=2,]) #2 
+UTR5_with_2_cpgs <- subset(number_diff_cpgs_per_UTR5, n >=2)
 
 promoter_data <- output[output$feature=="promoter",]
 number_diff_cpgs_per_prom <- dplyr::count(promoter_data, gene_id)
 range(number_diff_cpgs_per_prom$n) #1-2, mean = 1.21, median = 1
 hist(number_diff_cpgs_per_prom$n)
-nrow(number_diff_cpgs_per_prom[number_diff_cpgs_per_prom$n > 2,]) #0 
-proms_with_2_cpgs <- subset(number_diff_cpgs_per_prom, n >2)
+nrow(number_diff_cpgs_per_prom[number_diff_cpgs_per_prom$n >=2,]) #5
+proms_with_2_cpgs <- subset(number_diff_cpgs_per_prom, n>=2)
 
 # Conclusion focus only on the exon and intron genes
 
@@ -235,10 +235,10 @@ cpgs_unique_to_TEs <- cpgs_unique_to_TEs[!cpgs_in_TEs %in% cpgs_in_exons] # only
 
 TEs_subset <- TEs[TEs$cpg_position %in% cpgs_unique_to_TEs,]
 
-# Filter by 3cpgs per TE
+# Filter by cpgs per TE
 unique_TEs_only <- unique(TEs_subset$uniquie_identified)
 number_diff_cpgs_per_TE<- dplyr::count(TEs_subset,uniquie_identified )
-TEs_with_2_cpgs <- subset(number_diff_cpgs_per_TE, n >2) #1
+TEs_with_2_cpgs <- subset(number_diff_cpgs_per_TE, n >=2) #3
 
 # conclusion: nothing here to pursue
 
@@ -274,40 +274,41 @@ weighted_meth$percent_meth_difference_of_feature <- weighted_meth$male - weighte
 # feature level difference overall
 weighted_meth_exons <- weighted_meth[(weighted_meth$gene_id %in% exon_data$gene_id &
                                        weighted_meth$feature == "exon"),] 
-length(unique(weighted_meth_exons$gene_id)) # 13 genes
+length(unique(weighted_meth_exons$gene_id)) # 39 genes
 weighted_meth_exons <- weighted_meth_exons[(weighted_meth_exons$percent_meth_difference_of_feature > 0.15 |
-                                             weighted_meth_exons$percent_meth_difference_of_feature < -0.15),] # 21
-length(unique(weighted_meth_exons$gene_id)) # 4 genes
+                                             weighted_meth_exons$percent_meth_difference_of_feature < -0.15),]
+length(unique(weighted_meth_exons$gene_id)) # 12 genes
 
 
 weighted_meth_introns <- weighted_meth[(weighted_meth$gene_id %in% intron_data$gene_id &
-                                        weighted_meth$feature == "intron"),] #50 introns
-length(unique(weighted_meth_introns$gene_id)) # 23 genes
+                                        weighted_meth$feature == "intron"),] 
+length(unique(weighted_meth_introns$gene_id)) #50 genes
 weighted_meth_introns <- weighted_meth_introns[(weighted_meth_introns$percent_meth_difference_of_feature > 15 |
                                                   weighted_meth_introns$percent_meth_difference_of_feature < -15),] # 31
 length(unique(weighted_meth_introns$gene_id)) # 0 genes
+
 
 # Which sex are these genes hypermethylated in
 head(weighted_meth_exons)
 weighted_meth_exons$hypermethylated <- "male"
 weighted_meth_exons$hypermethylated[weighted_meth_exons$female > weighted_meth_exons$male] <- "female"
 
-female_hyper_exon_genes <- unique(weighted_meth_exons$gene_id[weighted_meth_exons$hypermethylated=="female"]) # 7
+female_hyper_exon_genes <- unique(weighted_meth_exons$gene_id[weighted_meth_exons$hypermethylated=="female"]) # 10
 length(female_hyper_exon_genes)
-male_hyper_exon_genes <-  unique(weighted_meth_exons$gene_id[weighted_meth_exons$hypermethylated=="male"]) # 7
+male_hyper_exon_genes <-  unique(weighted_meth_exons$gene_id[weighted_meth_exons$hypermethylated=="male"]) # 3
 length(male_hyper_exon_genes)
-both <- Reduce(intersect, list(female_hyper_exon_genes,male_hyper_exon_genes)) # 3
-common_exon <- weighted_meth_exons[weighted_meth_exons$gene_id %in% both,] # all have 3 diff exons, all two female hyper and one male hyper
+both <- Reduce(intersect, list(female_hyper_exon_genes,male_hyper_exon_genes)) # 1
+common_exon <- weighted_meth_exons[weighted_meth_exons$gene_id %in% both,] # two exons in one gene, one female hyper and one male
 
 # Write out a dataframe for later labelling in expression correlation scrips
 head(weighted_meth_exons)
-exons <- weighted_meth_exons[,c(1,2,3,10)]
 
-write.table(exons, file="hypermethylated_genes_with_category.txt",
+write.table(weighted_meth_exons, file="hypermethylated_genes_with_category.txt",
             sep="\t",quote = F, row.names = F, col.names = T)
 
 # Where are the genes in terms of chromosome
-ggplot(exon_data, aes(x=chr, fill=hypermethylated))+
+weighted_meth_exons$chr[weighted_meth_exons$chr=="DC3.0sc08"] <- "X"
+ggplot(weighted_meth_exons, aes(x=chr, fill=hypermethylated))+
   geom_bar()+
   guides()+
   xlab("Chromosome")+
@@ -322,6 +323,26 @@ ggplot(exon_data, aes(x=chr, fill=hypermethylated))+
         legend.title = element_blank())+
   scale_fill_manual(breaks = c("female","male"),labels=c("Female","Male"),
                     values=c("#DDCC77","#44AA99"))
+# Also just by the genes
+head(weighted_meth_exons)
+gene_data <- weighted_meth_exons[,c(1,3,10)]
+gene_data <- gene_data[!duplicated(weighted_meth_exons),]
+ggplot(gene_data, aes(x=chr, fill=hypermethylated))+
+  geom_bar()+
+  guides()+
+  xlab("Chromosome")+
+  ylab("Number of Differentially Methylated Genes")+
+  theme_bw()+
+  theme(axis.text.y=element_text(size=18),
+        axis.text.x=element_text(angle=45,hjust=1,size=18),
+        axis.title.y=element_text(size=20),
+        axis.title.x = element_text(size=20),
+        plot.title=element_text(size = 20),
+        legend.text = element_text(size=20),
+        legend.title = element_blank())+
+  scale_fill_manual(breaks = c("female","male"),labels=c("Female","Male"),
+                    values=c("#DDCC77","#44AA99"))
+
 
 ## -------------------------------------------------------------------------
 # Write out all the gene lists for later use
@@ -330,166 +351,3 @@ ggplot(exon_data, aes(x=chr, fill=hypermethylated))+
 head(weighted_meth_exons)
 write.table(as.data.frame(unique(weighted_meth_exons$gene_id)), file="diff_meth_exon_geneIDs.txt", 
             sep="\t", quote = F, col.names = F, row.names = F)
-
-# HERE XXXXXX
-
-
-# Also forthe below output the weighted meth scores for correlations
-both # genes with both exon and promotor 1522
-write.table(as.data.frame(both), file="./diff_meth_gene_lists/diff_meth_common_promotor_exon_geneIDs.txt", 
-            sep="\t", quote = F, col.names = F, row.names = F)
-
-prom_only <- promotor_genes_only[!promotor_genes_only %in% both] # 1187
-write.table(as.data.frame(prom_only), file="./diff_meth_gene_lists/diff_meth_unique_promotor_geneIDs.txt", 
-            sep="\t", quote = F, col.names = F, row.names = F)
-
-exon_only <- exon_genes_only[!exon_genes_only %in% both] # 1214
-write.table(as.data.frame(exon_only), file="./diff_meth_gene_lists/diff_meth_unique_exon_geneIDs.txt", 
-            sep="\t", quote = F, col.names = F, row.names = F)
-
-
-both_with_weighted_meth <- promotor_genes[promotor_genes$gene_id %in% both,]
-write.table(as.data.frame(both_with_weighted_meth), file="./diff_meth_gene_lists/diff_meth_common_promotor_exon_all_info.txt", 
-            sep="\t", quote = F, col.names = T, row.names = F)
-
-prom_with_weighted_meth <- promotor_genes[promotor_genes$gene_id %in% prom_only,]
-write.table(as.data.frame(prom_with_weighted_meth), file="./diff_meth_gene_lists/diff_meth_unique_promotor_all_info.txt", 
-            sep="\t", quote = F, col.names = T, row.names = F)
-
-exon_with_weighted_meth <- exon_genes[exon_genes$gene_id %in% exon_only,]
-write.table(as.data.frame(exon_with_weighted_meth), file="./diff_meth_gene_lists/diff_meth_unique_exon_all_info.txt", 
-            sep="\t", quote = F, col.names = T, row.names = F)
-
-# Make file of all proms and if they're diff or not for Peter
-prom_with_weighted_meth <- promotor_genes[promotor_genes$gene_id %in% promotor_genes_only,]
-head(prom_with_weighted_meth)
-for_peter <- prom_with_weighted_meth[,c(4,5,6,7,9,10,11)]
-head(for_peter2)
-
-for_peter2 <- for_peter[!duplicated(for_peter),]
-for_peter2$sig_diff_methylated <- "yes"
-
-head(annotation)
-annotation_proms <- subset(annotation, feature=="promotors_2000bp")
-annotation_proms <- annotation_proms[,c(1,2,3,4,5,7,8)]
-nrow(annotation_proms)
-
-not_sig_proms <- annotation_proms[!annotation_proms$gene_id %in% for_peter2$gene_id,]
-head(not_sig_proms)
-not_sig_proms$sig_diff_methylated <- "no"
-
-all_data_proms <- rbind(for_peter2, not_sig_proms)
-head(all_data_proms)
-nrow(all_data_proms)
-write.table(as.data.frame(all_data_proms), file="pcitri_diff_meth_promotors.txt", 
-            sep="\t", quote = F, col.names = T, row.names = F)
-
-FPKM_values_by_sex <- read_delim("~/Dropbox/Edinburgh/Sex-specific-mealybugs/transcription/FPKM_values_by_sex.txt", 
-                                 "\t", escape_double = FALSE, trim_ws = TRUE)
-data_wide <- dcast(FPKM_values_by_sex, gene_id ~ origin, value.var="FPKM")
-
-head(all_data_proms)
-all_data_proms$hyper_status <- ifelse(all_data_proms$male_mean_weightedMeth >
-                                        all_data_proms$female_mean_weightedMeth,
-                                  "male", "female")
-
-all_data_proms$hyper_status[all_data_proms$sig_diff_methylated == "no"] <- "not_sig"
-
-both_data <- merge(all_data_proms, data_wide, by="gene_id")
-head(both_data)
-both_data <- both_data[,c(9,10,11)]
-both_data_melt <- melt(both_data)
-head(both_data_melt)
-
-#### Define summary function (ref:http://www.cookbook-r.com/Graphs/Plotting_means_and_error_bars_(ggplot2)/)
-summarySE <- function(data=NULL, measurevar, groupvars=NULL, na.rm=FALSE,
-                      conf.interval=.95, .drop=TRUE) {
-  library(plyr)
-  
-  # New version of length which can handle NA's: if na.rm==T, don't count them
-  length2 <- function (x, na.rm=FALSE) {
-    if (na.rm) sum(!is.na(x))
-    else       length(x)
-  }
-  
-  # This does the summary. For each group's data frame, return a vector with
-  # N, mean, and sd
-  datac <- ddply(data, groupvars, .drop=.drop,
-                 .fun = function(xx, col) {
-                   c(N    = length2(xx[[col]], na.rm=na.rm),
-                     mean = mean   (xx[[col]], na.rm=na.rm),
-                     sd   = sd     (xx[[col]], na.rm=na.rm)
-                   )
-                 },
-                 measurevar
-  )
-  
-  # Rename the "mean" column    
-  datac <- plyr::rename(datac, c("mean" = measurevar))
-  
-  datac$se <- datac$sd / sqrt(datac$N)  # Calculate standard error of the mean
-  
-  # Confidence interval multiplier for standard error
-  # Calculate t-statistic for confidence interval: 
-  # e.g., if conf.interval is .95, use .975 (above/below), and use df=N-1
-  ciMult <- qt(conf.interval/2 + .5, datac$N-1)
-  datac$ci <- datac$se * ciMult
-  
-  return(datac)
-} 
-
-summary_all<-summarySE(both_data_melt, measurevar = "value", 
-                       groupvars = c("hyper_status","variable"))
-head(summary_all)
-
-ggplot(summary_all, aes(x=hyper_status, y=value, fill=variable))+
-  geom_bar(position = position_dodge(), stat = "identity")+
-  geom_errorbar(aes(ymin=value-ci, ymax=value+ci),
-                width=.2,
-                position = position_dodge(.9))+
-  theme_bw()+
-  xlab("Gene Set")+
-  ylab("FPKM")+
-  theme(axis.text=element_text(size=10),
-        axis.title=element_text(size=12),
-        plot.title=element_text(size = 12),
-        legend.text = element_text(size=10),
-        legend.title = element_blank())+
-  scale_fill_manual(breaks = c("female","male"),labels=c("Female","Male"),
-                    values=c("pink1","steelblue1"))+
-  scale_x_discrete(breaks = c("female","male","not_sig"),
-                   labels = c("Female Hypermethylated","Male Hypermethylated",
-                              "Not Significant"))
-
-both_data <- merge(all_data_proms, data_wide, by="gene_id")
-head(both_data)
-both_data$hyper_status[(both_data$male_mean_weightedMeth < 0.01 &
-                                both_data$female_mean_weightedMeth < 0.01)]<-"not_meth"
-both_data <- both_data[,c(9,10,11)]
-both_data_melt <- melt(both_data)
-head(both_data_melt)
-
-summary_all<-summarySE(both_data_melt, measurevar = "value", 
-                       groupvars = c("hyper_status","variable"))
-head(summary_all)
-
-ggplot(summary_all, aes(x=hyper_status, y=value, fill=variable))+
-  geom_bar(position = position_dodge(), stat = "identity")+
-  geom_errorbar(aes(ymin=value-se, ymax=value+se),
-                width=.2,
-                position = position_dodge(.9))+
-  theme_bw()+
-  ggtitle("Promotors")+
-  xlab("Gene Set")+
-  ylab("FPKM")+
-  theme(axis.text=element_text(size=10),
-        axis.title=element_text(size=12),
-        plot.title=element_text(size = 12),
-        legend.text = element_text(size=10),
-        legend.title = element_blank())+
-  scale_fill_manual(breaks = c("female","male"),labels=c("Female","Male"),
-                    values=c("pink1","steelblue1"))+
-  scale_x_discrete(breaks = c("female","male","not_sig","not_meth"),
-                   labels = c("Female\nHypermethylated","Male\nHypermethylated",
-                              "Not Significant","Unmethylated"),
-                   limits = c("not_meth","not_sig","female","male"))

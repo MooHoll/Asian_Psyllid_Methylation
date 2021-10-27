@@ -39,7 +39,7 @@ all$logFC <- as.numeric(all$logFC)
 all <- all[!(all$logFC < -15),]
 
 all$diff_meth_cat <- "yes"
-all$diff_meth_cat[all$hypermeth_cat=="none"] <- "no"
+all$diff_meth_cat[all$hypermethylated=="none"] <- "no"
 
 #Lets take a look, scatter plot all data
 ggplot(all, aes(x=meth_diff, y=logFC, colour=diff_exp))+
@@ -48,6 +48,29 @@ ggplot(all, aes(x=meth_diff, y=logFC, colour=diff_exp))+
   ylab("log(Fold-Change)")+
   theme_bw()+
   ggtitle("Differentially Expressed Genes")+
+  scale_colour_manual("", breaks=c("no", "yes"),
+                      values = c("black","red"),
+                      labels= c("No", "Yes"))+
+  theme(axis.text.y=element_text(size=18),
+        axis.text.x=element_text(size=18),
+        axis.title.y=element_text(size=20),
+        axis.title.x = element_text(size=20),
+        plot.title=element_text(size = 20),
+        legend.text = element_text(size=20),
+        legend.title = element_blank())+
+  geom_vline(xintercept=0.15)+
+  geom_vline(xintercept=-0.15)+
+  geom_hline(yintercept = 1.5)+
+  geom_hline(yintercept = -1.5)+
+  xlim(-0.5,0.6)
+
+ordered <- all[order(all$diff_meth_cat),]
+ggplot(ordered, aes(x=meth_diff, y=logFC, colour=diff_meth_cat))+
+  geom_point()+
+  xlab("Weighted Methylation Difference")+
+  ylab("log(Fold-Change)")+
+  theme_bw()+
+  ggtitle("Differentially Methylated Genes")+
   scale_colour_manual("", breaks=c("no", "yes"),
                       values = c("black","red"),
                       labels= c("No", "Yes"))+
@@ -79,7 +102,7 @@ condifence_intervals <- function(x) {
 }
 
 # Exp levels of diff methylated genes
-all$plot_cat <- paste(all$hypermeth_cat, all$sex, sep="_")
+all$plot_cat <- paste(all$hypermethylated, all$sex, sep="_")
 ggplot(all, aes(x=plot_cat, y=logFPKM))+
   geom_violin(aes(fill=sex))+
   xlab("Differential Methylation Category")+
@@ -87,14 +110,12 @@ ggplot(all, aes(x=plot_cat, y=logFPKM))+
   stat_summary(fun.data=condifence_intervals, color="red",size=1)+
   scale_fill_manual(breaks = c("female","male"),labels=c("Female","Male"),
                     values=c("#DDCC77","#44AA99"))+
-  scale_x_discrete(limits=c("none_female","none_male","exon_female_female","exon_female_male",
-                            "exon_male_female","exon_male_male","intron_female_female","intron_female_male",
-                            "intron_male_female","intron_male_male"),
-                   labels=c("None", "","Female\nHypermethylated\nExon","", "Male\nHypermethylated\nExon","",
-                            "Female\nHypermethylated\nIntron","", "Male\nHypermethylated\nIntron",""))+
+  scale_x_discrete(limits=c("none_female","none_male","female_female","female_male",
+                            "male_female","male_male"),
+                   labels=c("None", "None","Female Hypermethylated \nExon","", "Male Hypermethylated \nExon",""))+
   theme_bw()+
   theme(axis.text.y=element_text(size=18),
-        axis.text.x=element_text(size=16),
+        axis.text.x=element_text(size=16, hjust=0.01),
         axis.title.y=element_text(size=20),
         axis.title.x = element_text(size=20),
         plot.title=element_text(size = 20),
@@ -104,10 +125,10 @@ ggplot(all, aes(x=plot_cat, y=logFPKM))+
 
 # Stats
 all$sex <- as.factor(all$sex)
-all$hypermeth_cat <- as.factor(all$hypermeth_cat)
+all$hypermethylated <- as.factor(all$hypermethylated)
 
-model1<-lm(FPKM ~ sex * hypermeth_cat, data=all)
-model2<-lm(FPKM ~ sex + hypermeth_cat, data=all)
+model1<-lm(FPKM ~ sex * hypermethylated, data=all)
+model2<-lm(FPKM ~ sex + hypermethylated, data=all)
 anova(model1,model2) # No sig interaction
 summary.lm(model2) # None
 
