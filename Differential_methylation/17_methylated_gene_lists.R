@@ -42,7 +42,13 @@ table(genes_females$female_category)
 #high    low medium   none 
 #321  15728   1024    609 
 
+head(genes)
+# Make a file of general meth genes as a background GO set, meth genes = genes greater than lambda weighted meth 
+meth_genes <- genes[genes$female > 0.05 | genes$male > 0.05,]
+length(unique(meth_genes$gene_id)) #4429
 
+write.table(as.data.frame(meth_genes$gene_id), file="methylated_genes.txt", sep="\t", quote = F,
+            row.names = F, col.names = T)
 ## -------------------------------------------------------------------------
 # Need to pull out the gene list for each and the total gene list as background for the 
 # GO enrichment analysis
