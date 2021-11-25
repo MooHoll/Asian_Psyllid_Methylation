@@ -133,7 +133,6 @@ nrow(res_significant) #1259 total differentially expressed genes
 nrow(res_significant[res_significant$log2FoldChange > 1.5,]) #1164 upregulated in males
 nrow(res_significant[res_significant$log2FoldChange < -1.5,]) #95 upregulated in females
 
-
 #------------------------------------------------------------------
 # heatmap of top differentially expressed
 n=50

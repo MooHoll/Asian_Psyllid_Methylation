@@ -101,6 +101,15 @@ all_data$category[all_data$diff_exp =="yes" & all_data$male_fpkm_mean==0] <- "fe
 
 table(all_data$category)
 
+# Take an eyeball of the male limited genes
+head(all_data)
+look <- all_data[all_data$category=="male_limited",]
+boxplot(look$male_fpkm_mean)
+mean(look$male_fpkm_mean)
+median(look$male_fpkm_mean)
+range(look$male_fpkm_mean)
+nrow(look[look$male_fpkm_mean<10,]) #88/484 - ok I'm convinced this is real
+
 # Goodness of fit
 observed = c(1164, 95)    # observed frequencies 
 expected = c(0.5, 0.5)    # expected proportions
