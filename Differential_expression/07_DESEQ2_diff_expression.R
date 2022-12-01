@@ -60,6 +60,39 @@ ggplot(data, aes(PC1, PC2, color=sex)) + geom_point(size=14) +
         axis.title=element_text(size=24),
         legend.text=element_text(size=24))
 
+# Make a scree plot
+rv <- rowVars(assay(rld))
+select <- order(rv, decreasing=TRUE)[seq_len(min(500, length(rv)))] # Top variable genes
+pca <- prcomp(t(assay(rld)[select,]))
+percentVar <- 100*(pca$sdev^2 / sum( pca$sdev^2 )) # the contribution to the total variance for each component
+
+scree_plot=data.frame(percentVar)
+scree_plot[,2]<- c(1:6)
+colnames(scree_plot)<-c("Variance","PC Number")
+
+ggplot(scree_plot, mapping=aes(x=`PC Number`, y=Variance))+
+  geom_bar(stat="identity")+
+  theme_bw()+
+  ylab("% Varience")+
+  theme(axis.text=element_text(size=22),
+        axis.title=element_text(size=24),
+        legend.text=element_text(size=24))
+
+# Heatmap of the top variable genes
+my_colors = list(
+  sex = c(Female = "#DDCC77", Male ="#44AA99"))
+mat = assay(rld)[ select, ]
+mat = mat - rowMeans(mat)
+df2 = as.data.frame(colData(rld)[,c("sex"),drop=FALSE])
+colnames(df2)<-c("sex")
+
+pheatmap(mat, annotation_col=df2,
+         show_rownames = F,
+         fontsize = 16,
+         annotation_colors = my_colors)
+# F1 weird genes: Dcitr08g09350.1, Dcitr06g09040.1, Dcitr06g09050.1, Dcitr01g10760.1, Dcitr08g09360.1, Dcitr08g09320.1, Dcitr08g09380.1
+
+
 # two 1st samples plotted against each other to check consistency (for rlog and log2) 
 par( mfrow = c( 1, 2 ) )
 dds = estimateSizeFactors(dds)

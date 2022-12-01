@@ -6,7 +6,7 @@ setwd("~/Dropbox/Edinburgh/Projects/Asian_psyllid/GO_enrichment")
 library(readr)
 library(stringr)
 
-new_d_citri_GO_annotations <- read_delim("new_d_citri_GO_annotations.txt", 
+new_d_citri_GO_annotations <- read_delim("D_citri_GO_annotations_2021.txt", 
                                           delim = "\t", escape_double = FALSE, 
                                           trim_ws = TRUE)
 new_d_citri_GO_annotations$gene_id <- str_sub(new_d_citri_GO_annotations$gene_id, end=-3)
@@ -95,4 +95,11 @@ colnames(hyper_female) <- "gene_id"
 hyper_female <- as.data.frame(hyper_female[!duplicated(hyper_female$gene_id),])
 colnames(hyper_female) <- "gene_id"
 write.table(hyper_female, file="./gene_lists/hyper_meth_female.txt", sep="\t",quote = F, col.names = T, row.names = F)
+
+# What are the variable F1 female genes up to?
+variable_genes <- as.data.frame(c("Dcitr08g09350.1", "Dcitr06g09040.1", "Dcitr06g09050.1", "Dcitr01g10760.1", 
+                                "Dcitr08g09360.1", "Dcitr08g09320.1", "Dcitr08g09380.1"))
+colnames(variable_genes)<-"gene_id"
+
+F1 <- merge(variable_genes, new_d_citri_GO_annotations, by="gene_id")
 
